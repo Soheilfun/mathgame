@@ -1,6 +1,6 @@
 /**
- * mathgame - Self-contained Ultra-Low Latency SPA
- * Competitive Mental Math Speedrunning Platform (Iran / Regional)
+ * mathgame - Ultra-Low Latency Competitive Mental Math Platform
+ * Designed with Neo-Arcade Glassmorphism, Zero-Allocation 144Hz Engine, and Persian Localization
  */
 
 export function renderAppHtml() {
@@ -8,7 +8,7 @@ export function renderAppHtml() {
 <html lang="fa" dir="rtl" class="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>mathgame | لیگ محاسبات ذهنی سریع ایران</title>
   
   <!-- Tailwind CSS via CDN -->
@@ -19,16 +19,21 @@ export function renderAppHtml() {
       theme: {
         extend: {
           colors: {
-            arcade: {
-              bg: '#020617',
-              surface: '#0f172a',
-              card: '#1e293b',
-              border: '#334155',
-              cyan: '#06b6d4',
+            brand: {
+              50: '#ecfeff',
+              100: '#cffafe',
+              400: '#22d3ee',
+              500: '#06b6d4',
+              600: '#0891b2',
+              900: '#164e63',
+              950: '#083344'
+            },
+            accent: {
               emerald: '#10b981',
-              crimson: '#f43f5e',
+              cyan: '#06b6d4',
               amber: '#f59e0b',
-              purple: '#a855f7'
+              crimson: '#ff2d55',
+              violet: '#a855f7'
             }
           },
           fontFamily: {
@@ -43,141 +48,185 @@ export function renderAppHtml() {
   <!-- Google Fonts: Vazirmatn & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
+    :root {
+      --bg-dark: #030712;
+      --card-glass: rgba(15, 23, 42, 0.65);
+      --border-glass: rgba(255, 255, 255, 0.08);
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-rose: #ff2d55;
+    }
+
     * {
       touch-action: manipulation;
       user-select: none;
       -webkit-user-select: none;
+      box-sizing: border-box;
     }
+
     input, textarea {
       user-select: text;
       -webkit-user-select: text;
     }
+
     body {
       font-family: 'Vazirmatn', system-ui, sans-serif;
-      background-color: #020617;
+      background-color: var(--bg-dark);
       color: #f8fafc;
       overflow-x: hidden;
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
+
     .num-font {
       font-family: 'JetBrains Mono', monospace;
       font-variant-numeric: tabular-nums;
     }
-    /* Subtle arcade grid overlay */
-    .arcade-grid {
-      background-size: 40px 40px;
+
+    /* Neo-Arcade Ambient Glow Grid */
+    .ambient-grid {
+      background-color: #030712;
       background-image: 
-        linear-gradient(to right, rgba(51, 65, 85, 0.12) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(51, 65, 85, 0.12) 1px, transparent 1px);
+        radial-gradient(circle at 50% 0%, rgba(6, 182, 212, 0.12) 0%, transparent 60%),
+        radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
     }
-    /* Animations */
-    @keyframes hit-glow {
-      0% { border-color: #10b981; box-shadow: 0 0 25px rgba(16, 185, 129, 0.6); transform: scale(1.015); }
-      100% { border-color: #334155; box-shadow: none; transform: scale(1); }
+
+    /* Luxury Glass Panel */
+    .glass-card {
+      background: var(--card-glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glass);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
     }
+
+    .glass-interactive {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-interactive:hover {
+      border-color: rgba(6, 182, 212, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px -5px rgba(6, 182, 212, 0.15), inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+    }
+    .glass-interactive:active {
+      transform: scale(0.98);
+    }
+
+    /* Zero-allocation Visual Feedback Animations */
+    @keyframes hit-pulse {
+      0% {
+        border-color: #10b981;
+        box-shadow: 0 0 35px rgba(16, 185, 129, 0.6), inset 0 0 20px rgba(16, 185, 129, 0.2);
+        transform: scale(1.02);
+      }
+      100% {
+        border-color: var(--border-glass);
+        box-shadow: none;
+        transform: scale(1);
+      }
+    }
+
     @keyframes miss-shake {
-      0%, 100% { transform: translateX(0); border-color: #f43f5e; box-shadow: 0 0 25px rgba(244, 63, 94, 0.6); }
-      20%, 60% { transform: translateX(-8px); }
-      40%, 80% { transform: translateX(8px); }
+      0%, 100% { transform: translateX(0); border-color: #ff2d55; box-shadow: 0 0 30px rgba(255, 45, 85, 0.5); }
+      15%, 45%, 75% { transform: translateX(-10px); }
+      30%, 60%, 90% { transform: translateX(10px); }
     }
-    .animate-hit {
-      animation: hit-glow 0.16s ease-out;
+
+    .anim-hit {
+      animation: hit-pulse 0.18s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .animate-miss {
-      animation: miss-shake 0.22s ease-in-out;
+
+    .anim-miss {
+      animation: miss-shake 0.25s ease-in-out;
     }
-    @keyframes pulse-fire {
-      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.7)); }
-      50% { transform: scale(1.12); filter: drop-shadow(0 0 16px rgba(239, 68, 68, 0.9)); }
+
+    @keyframes flame-pulse {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.8)); }
+      50% { transform: scale(1.15); filter: drop-shadow(0 0 16px rgba(255, 45, 85, 1)); }
     }
-    .streak-fire {
-      animation: pulse-fire 0.7s infinite alternate ease-in-out;
+    .flame-active {
+      animation: flame-pulse 0.6s infinite alternate ease-in-out;
     }
-    /* Custom scrollbars */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #090d16;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #334155;
-      border-radius: 3px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #475569;
-    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #030712; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
   </style>
 </head>
-<body class="arcade-grid text-slate-100 flex flex-col min-h-screen selection:bg-cyan-500 selection:text-slate-950">
+<body class="ambient-grid text-slate-100 flex flex-col min-h-screen selection:bg-cyan-500 selection:text-slate-950">
 
-  <!-- TOP APP BAR -->
-  <header class="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40">
-    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
+  <!-- TOP HIGH-END NAVIGATION BAR -->
+  <header class="border-b border-white/[0.06] bg-slate-950/70 backdrop-blur-xl sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
       
-      <!-- Brand & Rank Badge -->
+      <!-- Logo & League Brand -->
       <div class="flex items-center gap-3">
-        <button id="btnNavHome" class="flex items-center gap-2.5 group text-left cursor-pointer">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 to-emerald-400 flex items-center justify-center font-extrabold text-slate-950 text-xl shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
-            ⚡
+        <button id="btnNavHome" class="flex items-center gap-2.5 group cursor-pointer text-right">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-brand-500 to-emerald-400 p-[1px] shadow-lg shadow-cyan-500/20 group-hover:shadow-cyan-500/40 transition">
+            <div class="w-full h-full bg-slate-950 rounded-[11px] flex items-center justify-center">
+              <span class="num-font text-lg font-black bg-gradient-to-br from-cyan-400 to-emerald-300 bg-clip-text text-transparent">MG</span>
+            </div>
           </div>
           <div>
             <div class="flex items-center gap-1.5">
-              <span class="font-black text-xl tracking-tight bg-gradient-to-r from-cyan-400 via-emerald-300 to-slate-100 bg-clip-text text-transparent font-mono">
+              <span class="num-font font-black text-xl tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
                 mathgame
               </span>
-              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-cyan-950 border border-cyan-800 text-cyan-400 uppercase tracking-widest">
-                PRO
+              <span class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-cyan-950/80 border border-cyan-700/60 text-cyan-300">
+                EDGE
               </span>
             </div>
-            <div class="text-[11px] text-slate-400 font-medium" id="txtSubTitle">
+            <div class="text-[11px] text-slate-400 font-medium truncate" id="txtHeaderSubtitle">
               لیگ محاسبات ذهنی سریع ایران
             </div>
           </div>
         </button>
       </div>
 
-      <!-- Center Status / Edge PoP / Sync Pill -->
-      <div class="hidden sm:flex items-center gap-2">
-        <div id="badgeNetwork" class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs text-emerald-400 font-mono">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span id="txtEdgeStatus">لبه کلودفلر (Online)</span>
+      <!-- Edge PoP & Sync Indicator -->
+      <div class="hidden sm:flex items-center gap-2 font-mono text-xs">
+        <div id="badgeEdgeStatus" class="flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 border border-white/[0.08] text-emerald-400">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span id="txtEdgePoP">لبه کلودفلر (Online)</span>
         </div>
-        <div id="badgeSyncQueue" class="hidden items-center gap-1 px-2 py-0.5 rounded-full bg-amber-950/70 border border-amber-800 text-[11px] text-amber-300 font-mono">
-          <span id="txtSyncCount">0</span> رکورد در صف
+        <div id="badgeSyncQueue" class="hidden items-center gap-1.5 px-3 py-1 rounded-full bg-amber-950/70 border border-amber-700/60 text-amber-300">
+          <span>⚡</span>
+          <span id="txtSyncCount">0</span> در صف همگام‌سازی
         </div>
       </div>
 
-      <!-- Right Controls: Audio, User Profile, Language Toggle -->
-      <div class="flex items-center gap-2 sm:gap-3">
-        <!-- Sound Toggle -->
-        <button id="btnAudioToggle" title="قطع/وصل صدا" class="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white transition">
-          <span id="iconAudio" class="text-base">🔊</span>
+      <!-- Action Icons: Audio, Profile, Leaderboard, Analytics, Lang -->
+      <div class="flex items-center gap-2">
+        <button id="btnAudioToggle" title="قطع / وصل صدا" class="w-9 h-9 rounded-xl glass-card flex items-center justify-center text-slate-300 hover:text-white hover:border-cyan-500/40 transition cursor-pointer">
+          <span id="iconAudio" class="text-sm">🔊</span>
         </button>
 
-        <!-- User Profile Pill -->
-        <button id="btnOpenProfile" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/50 transition">
+        <button id="btnOpenProfile" class="flex items-center gap-2 px-3 py-1.5 rounded-xl glass-card hover:border-cyan-500/50 transition cursor-pointer">
           <span id="navUserBadge" class="text-sm">🌱</span>
-          <div class="text-right">
-            <div id="navUserName" class="text-xs font-bold text-slate-200 truncate max-w-[90px] sm:max-w-[120px]">کاربر مهمان</div>
+          <div class="text-right hidden sm:block">
+            <div id="navUserName" class="text-xs font-bold text-slate-200 truncate max-w-[100px]">کاربر</div>
             <div class="text-[10px] font-mono text-cyan-400 font-semibold" id="navUserElo">1200 ELO</div>
           </div>
         </button>
 
-        <!-- Navigation Tabs -->
-        <button id="btnNavLeaderboard" title="جدول برترین‌ها" class="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white transition">
+        <button id="btnNavLeaderboard" title="جدول برترین‌ها" class="w-9 h-9 rounded-xl glass-card flex items-center justify-center text-slate-300 hover:text-white hover:border-cyan-500/40 transition cursor-pointer">
           🏆
         </button>
-        <button id="btnNavAnalytics" title="تحلیل عملکرد" class="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white transition">
+
+        <button id="btnNavAnalytics" title="تحلیل عملکرد و نقاط ضعف" class="w-9 h-9 rounded-xl glass-card flex items-center justify-center text-slate-300 hover:text-white hover:border-cyan-500/40 transition cursor-pointer">
           📊
         </button>
 
-        <!-- Lang Switcher -->
-        <button id="btnLangToggle" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 font-mono text-xs font-semibold text-slate-300">
+        <button id="btnLangToggle" class="px-2.5 py-1 rounded-xl glass-card text-xs font-mono font-bold text-slate-300 hover:text-white hover:border-cyan-500/40 transition cursor-pointer">
           EN
         </button>
       </div>
@@ -185,189 +234,247 @@ export function renderAppHtml() {
     </div>
   </header>
 
-  <!-- MAIN WRAPPER -->
-  <main class="flex-1 max-w-6xl w-full mx-auto p-4 flex flex-col justify-center">
+  <!-- MAIN VIEW CONTAINER -->
+  <main class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-center">
 
-    <!-- SCREEN 1: GAME HUB (MODE SELECTOR & CONFIG) -->
-    <section id="viewHub" class="flex flex-col gap-6 max-w-4xl mx-auto w-full py-4">
+    <!-- ============================================== -->
+    <!-- SCREEN 1: BENTO GRID HUB & CONTROLS -->
+    <!-- ============================================== -->
+    <section id="viewHub" class="flex flex-col gap-5 max-w-5xl mx-auto w-full py-2">
       
-      <!-- HERO BANNER -->
-      <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900/90 to-cyan-950/40 border border-slate-800 p-6 sm:p-8">
-        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div class="space-y-2">
-            <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-cyan-950/80 border border-cyan-800/60 text-cyan-300 text-xs font-medium">
-              <span>🇮🇷 mathgame - لیگ آنلاین سرعت ذهن و تمرکز</span>
+      <!-- HERO BENTO ROW -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        
+        <!-- Bento 1: Main Action Hero (8 cols) -->
+        <div class="lg:col-span-8 glass-card rounded-3xl p-6 sm:p-8 relative overflow-hidden flex flex-col justify-between min-h-[220px]">
+          <!-- Background ambient light inside card -->
+          <div class="absolute -right-20 -top-20 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+          <div class="relative z-10 space-y-3">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-700/40 text-cyan-300 text-xs font-medium">
+              <span>🇮🇷 رقابت سراسری در لبه شبکه کلودفلر</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+              <span class="font-mono text-[11px]">144Hz Zero-Lag</span>
             </div>
             <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight">
-              سرعتت رو به رخ بکش، <span class="bg-gradient-to-l from-emerald-400 to-cyan-400 bg-clip-text text-transparent">قهرمان mathgame شو!</span>
+              سرعتت رو به رخ بکش، <span class="bg-gradient-to-r from-cyan-400 via-emerald-300 to-teal-200 bg-clip-text text-transparent">قهرمان محاسبات شو!</span>
             </h1>
-            <p class="text-slate-400 text-sm max-w-xl leading-relaxed">
-              محاسبات ریاضی با نهایت سرعت در لبه شبکه کلودفلر، بدون افت فریم (۱۴۴ هرتز) و ورودی بدون اینتر (Zen Numpad).
+            <p class="text-slate-400 text-xs sm:text-sm max-w-xl leading-relaxed">
+              سیستم فوق سریع ثبت ورودی بدون نیاز به کلید اینتر (Zen Auto-Submit)، فیلتر ضدتقلب هوشمند، و آنالیز فکت‌های کند مغز.
             </p>
           </div>
-          <div class="flex flex-row md:flex-col gap-3 justify-end">
-            <button id="btnQuickStart" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-black text-base shadow-xl shadow-cyan-500/25 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer">
-              <span>شروع بازی سریع</span>
+
+          <div class="relative z-10 pt-6 flex flex-wrap items-center gap-3">
+            <button id="btnHeroStart" class="px-8 py-4 rounded-2xl bg-gradient-to-r from-cyan-500 to-emerald-400 hover:from-cyan-400 hover:to-emerald-300 text-slate-950 font-black text-base shadow-xl shadow-cyan-500/25 active:scale-95 transition-all flex items-center gap-2.5 cursor-pointer">
+              <span>شروع مسابقه</span>
               <span class="num-font text-lg">⚡</span>
+              <span class="text-xs font-mono font-normal opacity-75 hidden sm:inline">(Space)</span>
             </button>
-            <button id="btnTrainWeaknessHub" class="px-5 py-2.5 rounded-xl bg-slate-900/90 border border-amber-600/40 hover:border-amber-500 text-amber-300 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer">
-              <span>تمرین نقاط ضعف</span>
-              <span>🎯</span>
+
+            <button id="btnHeroWeakness" class="px-5 py-4 rounded-2xl glass-card glass-interactive text-amber-300 text-xs font-bold flex items-center gap-2 cursor-pointer">
+              <span>🎯 تمرین نقاط ضعف</span>
             </button>
           </div>
         </div>
-      </div>
 
-      <!-- GAME MODES CARDS -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-
-        <!-- Mode 1: Speed Blitz -->
-        <div class="mode-card cursor-pointer rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-cyan-500/70 p-5 flex flex-col justify-between transition-all group hover:-translate-y-1 hover:shadow-xl hover:shadow-cyan-500/10" data-mode="blitz">
+        <!-- Bento 2: Player Stats Summary (4 cols) -->
+        <div class="lg:col-span-4 glass-card rounded-3xl p-6 flex flex-col justify-between">
           <div>
-            <div class="w-12 h-12 rounded-xl bg-cyan-950/80 border border-cyan-800/50 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition-transform">
-              ⏱️
+            <div class="flex items-center justify-between border-b border-white/[0.06] pb-3 mb-4">
+              <span class="text-xs font-semibold text-slate-400">شناسنامه محاسب</span>
+              <button id="btnEditProfilePencil" class="text-xs text-cyan-400 hover:text-cyan-300 font-bold cursor-pointer">ویرایش</button>
             </div>
-            <h3 class="font-bold text-lg text-white mb-1 group-hover:text-cyan-400 transition-colors">حمله سرعتی</h3>
-            <p class="text-xs text-slate-400 mb-3">حداکثر عملیات صحیح در زمان مشخص (۳۰، ۶۰، ۱۲۰ ثانیه)</p>
-          </div>
-          <div class="flex items-center justify-between text-xs font-mono text-cyan-400 pt-3 border-t border-slate-800/80">
-            <span>Speed Blitz</span>
-            <span class="font-bold">۳۰s / ۶۰s</span>
-          </div>
-        </div>
-
-        <!-- Mode 2: Target Sprint -->
-        <div class="mode-card cursor-pointer rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-emerald-500/70 p-5 flex flex-col justify-between transition-all group hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10" data-mode="sprint">
-          <div>
-            <div class="w-12 h-12 rounded-xl bg-emerald-950/80 border border-emerald-800/50 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition-transform">
-              🎯
-            </div>
-            <h3 class="font-bold text-lg text-white mb-1 group-hover:text-emerald-400 transition-colors">دوی سرعتی</h3>
-            <p class="text-xs text-slate-400 mb-3">حل ۲۰، ۵۰ یا ۱۰۰ معادله با ثبت میلی‌ثانیه‌ای زمان کل</p>
-          </div>
-          <div class="flex items-center justify-between text-xs font-mono text-emerald-400 pt-3 border-t border-slate-800/80">
-            <span>Target Sprint</span>
-            <span class="font-bold">۲۰ / ۵۰ سوال</span>
-          </div>
-        </div>
-
-        <!-- Mode 3: Multiplication Dojo -->
-        <div class="mode-card cursor-pointer rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-amber-500/70 p-5 flex flex-col justify-between transition-all group hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-500/10" data-mode="dojo">
-          <div>
-            <div class="w-12 h-12 rounded-xl bg-amber-950/80 border border-amber-800/50 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition-transform">
-              🥋
-            </div>
-            <h3 class="font-bold text-lg text-white mb-1 group-hover:text-amber-400 transition-colors">ضرب‌خانه تخصصی</h3>
-            <p class="text-xs text-slate-400 mb-3">دریل‌های جدول ضرب، اعداد دو رقمی و مسابقات جام جهانی</p>
-          </div>
-          <div class="flex items-center justify-between text-xs font-mono text-amber-400 pt-3 border-t border-slate-800/80">
-            <span>Multiplication Dojo</span>
-            <span class="font-bold">سطح ۱ تا ۴</span>
-          </div>
-        </div>
-
-        <!-- Mode 4: Sudden Death / Survival -->
-        <div class="mode-card cursor-pointer rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-rose-500/70 p-5 flex flex-col justify-between transition-all group hover:-translate-y-1 hover:shadow-xl hover:shadow-rose-500/10" data-mode="survival">
-          <div>
-            <div class="w-12 h-12 rounded-xl bg-rose-950/80 border border-rose-800/50 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition-transform">
-              💀
-            </div>
-            <h3 class="font-bold text-lg text-white mb-1 group-hover:text-rose-400 transition-colors">چالش بقا</h3>
-            <p class="text-xs text-slate-400 mb-3">شروع با ۵ ثانیه! هر پاسخ درست ۱.۵+ ثانیه، ۱ غلط = باخت قطعی</p>
-          </div>
-          <div class="flex items-center justify-between text-xs font-mono text-rose-400 pt-3 border-t border-slate-800/80">
-            <span>Sudden Death</span>
-            <span class="font-bold">مرگ ناگهانی</span>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- CONFIG PANEL & OPERATOR MATRIX -->
-      <div class="rounded-2xl bg-slate-900/70 border border-slate-800 p-6 space-y-6">
-        
-        <!-- Header row of config -->
-        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
-          <div>
-            <h2 class="text-base font-bold text-white flex items-center gap-2">
-              <span>⚙️ تنظیمات مد و ماتریس عملگرها</span>
-              <span id="lblActiveModeTitle" class="px-2 py-0.5 rounded bg-cyan-950 border border-cyan-800 text-xs text-cyan-300 font-mono">حمله سرعتی (۳۰s)</span>
-            </h2>
-            <p class="text-xs text-slate-400 mt-0.5">عملگرهای مورد نظر برای تمرین یا مسابقه را فعال یا غیرفعال کنید</p>
-          </div>
-          
-          <!-- Mode Specific Option Dropdowns -->
-          <div id="boxModeOptions" class="flex items-center gap-2">
-            <!-- Dynamically injected based on selected mode -->
-          </div>
-        </div>
-
-        <!-- Operators Matrix Checkboxes -->
-        <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-2">عملگرهای فعال در بازی:</label>
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5">
             
-            <label class="operator-pill flex items-center justify-between p-3 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-slate-700 cursor-pointer transition select-none">
-              <div class="flex items-center gap-2">
-                <input type="checkbox" id="chkOpAdd" checked class="w-4 h-4 rounded text-cyan-500 bg-slate-800 border-slate-700 focus:ring-0">
-                <span class="text-sm font-medium">جمع (+)</span>
+            <div class="flex items-center gap-3.5 mb-4">
+              <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-cyan-500/30 flex items-center justify-center text-3xl shadow-inner shadow-cyan-500/10" id="cardRankIcon">
+                🌱
               </div>
-              <span class="font-mono text-cyan-400 text-sm font-bold">+</span>
-            </label>
-
-            <label class="operator-pill flex items-center justify-between p-3 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-slate-700 cursor-pointer transition select-none">
-              <div class="flex items-center gap-2">
-                <input type="checkbox" id="chkOpSub" checked class="w-4 h-4 rounded text-cyan-500 bg-slate-800 border-slate-700 focus:ring-0">
-                <span class="text-sm font-medium">تفریق (−)</span>
+              <div>
+                <h3 class="font-extrabold text-base text-white truncate max-w-[160px]" id="cardUsername">کاربر مهمان</h3>
+                <div class="flex items-center gap-1.5 mt-0.5">
+                  <span class="text-xs font-mono font-bold text-cyan-400" id="cardElo">1200 ELO</span>
+                  <span class="text-slate-600">•</span>
+                  <span class="text-[11px] text-slate-400" id="cardRankName">کارآموز</span>
+                </div>
               </div>
-              <span class="font-mono text-cyan-400 text-sm font-bold">−</span>
-            </label>
+            </div>
 
-            <label class="operator-pill flex items-center justify-between p-3 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-slate-700 cursor-pointer transition select-none">
-              <div class="flex items-center gap-2">
-                <input type="checkbox" id="chkOpMul" checked class="w-4 h-4 rounded text-cyan-500 bg-slate-800 border-slate-700 focus:ring-0">
-                <span class="text-sm font-medium">ضرب (×)</span>
+            <div class="space-y-2 text-xs">
+              <div class="flex justify-between p-2 rounded-xl bg-slate-950/60 border border-white/[0.04]">
+                <span class="text-slate-400">استان ثبت‌شده:</span>
+                <span class="text-slate-200 font-medium" id="cardProvince">تهران</span>
               </div>
-              <span class="font-mono text-cyan-400 text-sm font-bold">×</span>
-            </label>
-
-            <label class="operator-pill flex items-center justify-between p-3 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-slate-700 cursor-pointer transition select-none">
-              <div class="flex items-center gap-2">
-                <input type="checkbox" id="chkOpDiv" checked class="w-4 h-4 rounded text-cyan-500 bg-slate-800 border-slate-700 focus:ring-0">
-                <span class="text-sm font-medium">تقسیم (÷)</span>
+              <div class="flex justify-between p-2 rounded-xl bg-slate-950/60 border border-white/[0.04]">
+                <span class="text-slate-400">بهترین رکورد سرعت (PB):</span>
+                <span class="num-font text-emerald-400 font-bold" id="cardBestPb">40.0 OPM</span>
               </div>
-              <span class="font-mono text-cyan-400 text-sm font-bold">÷</span>
-            </label>
+            </div>
+          </div>
 
-            <label class="operator-pill flex items-center justify-between p-3 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-slate-700 cursor-pointer transition select-none">
-              <div class="flex items-center gap-2">
-                <input type="checkbox" id="chkOpMod" class="w-4 h-4 rounded text-cyan-500 bg-slate-800 border-slate-700 focus:ring-0">
-                <span class="text-sm font-medium">باقیمانده (%)</span>
-              </div>
-              <span class="font-mono text-cyan-400 text-sm font-bold">%</span>
-            </label>
-
-            <label class="operator-pill flex items-center justify-between p-3 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-slate-700 cursor-pointer transition select-none">
-              <div class="flex items-center gap-2">
-                <input type="checkbox" id="chkOpPow" class="w-4 h-4 rounded text-cyan-500 bg-slate-800 border-slate-700 focus:ring-0">
-                <span class="text-sm font-medium">توان (x², x³)</span>
-              </div>
-              <span class="font-mono text-cyan-400 text-sm font-bold">x²</span>
-            </label>
-
+          <div class="pt-3 text-[10px] text-slate-400 text-center font-mono">
+            پشتیبانی کامل از ارقام فارسی ۱۲۳۴۵
           </div>
         </div>
 
-        <!-- Input System & Ergonomics Toggle -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+      </div>
+
+      <!-- BENTO 3: GAME MODES SELECTOR -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between px-1">
+          <h2 class="text-sm font-bold text-white flex items-center gap-2">
+            <span>🎮 انتخاب حالت بازی:</span>
+            <span id="lblModeActive" class="px-2.5 py-0.5 rounded-lg bg-cyan-950/80 border border-cyan-700/50 text-cyan-300 font-mono text-xs">حمله سرعتی (۳۰s)</span>
+          </h2>
+          <div id="subOptionsToolbar" class="flex items-center gap-1.5">
+            <!-- Dynamically populated buttons -->
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
           
-          <div class="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between">
-            <div class="space-y-0.5">
+          <!-- Mode 1: Blitz -->
+          <div class="mode-tile cursor-pointer glass-card glass-interactive rounded-2xl p-5 flex flex-col justify-between ring-2 ring-cyan-500 bg-slate-900/90" data-mode="blitz">
+            <div>
+              <div class="w-10 h-10 rounded-xl bg-cyan-950/80 border border-cyan-800/60 flex items-center justify-center text-xl mb-3">
+                ⏱️
+              </div>
+              <h3 class="font-bold text-base text-white">حمله سرعتی</h3>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">حداکثر عملیات در بازه مشخص (۳۰، ۶۰ یا ۱۲۰ ثانیه)</p>
+            </div>
+            <div class="flex items-center justify-between text-xs font-mono text-cyan-400 pt-3 border-t border-white/[0.06] mt-4">
+              <span>Speed Blitz</span>
+              <span class="font-bold">زمان محدود</span>
+            </div>
+          </div>
+
+          <!-- Mode 2: Sprint -->
+          <div class="mode-tile cursor-pointer glass-card glass-interactive rounded-2xl p-5 flex flex-col justify-between" data-mode="sprint">
+            <div>
+              <div class="w-10 h-10 rounded-xl bg-emerald-950/80 border border-emerald-800/60 flex items-center justify-center text-xl mb-3">
+                🎯
+              </div>
+              <h3 class="font-bold text-base text-white">دوی هدفی</h3>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">حل ۲۰، ۵۰ یا ۱۰۰ معادله با زمان‌سنج میلی‌ثانیه‌ای</p>
+            </div>
+            <div class="flex items-center justify-between text-xs font-mono text-emerald-400 pt-3 border-t border-white/[0.06] mt-4">
+              <span>Target Sprint</span>
+              <span class="font-bold">تعداد ثابت</span>
+            </div>
+          </div>
+
+          <!-- Mode 3: Dojo -->
+          <div class="mode-tile cursor-pointer glass-card glass-interactive rounded-2xl p-5 flex flex-col justify-between" data-mode="dojo">
+            <div>
+              <div class="w-10 h-10 rounded-xl bg-amber-950/80 border border-amber-800/60 flex items-center justify-center text-xl mb-3">
+                🥋
+              </div>
+              <h3 class="font-bold text-base text-white">ضرب‌خانه تخصصی</h3>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">دریل‌های جدول ضرب، اعداد ۱۱ تا ۱۹ و دو رقمی در دو رقمی</p>
+            </div>
+            <div class="flex items-center justify-between text-xs font-mono text-amber-400 pt-3 border-t border-white/[0.06] mt-4">
+              <span>Multiplication</span>
+              <span class="font-bold">سطوح ۱ تا ۴</span>
+            </div>
+          </div>
+
+          <!-- Mode 4: Survival -->
+          <div class="mode-tile cursor-pointer glass-card glass-interactive rounded-2xl p-5 flex flex-col justify-between" data-mode="survival">
+            <div>
+              <div class="w-10 h-10 rounded-xl bg-rose-950/80 border border-rose-800/60 flex items-center justify-center text-xl mb-3">
+                💀
+              </div>
+              <h3 class="font-bold text-base text-white">مرگ ناگهانی</h3>
+              <p class="text-xs text-slate-400 mt-1 leading-relaxed">شروع با ۵ ثانیه! هر پاسخ ۱.۵+ ثانیه، ۱ خطا = پایان بازی</p>
+            </div>
+            <div class="flex items-center justify-between text-xs font-mono text-rose-400 pt-3 border-t border-white/[0.06] mt-4">
+              <span>Sudden Death</span>
+              <span class="font-bold">چالش بقا</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- BENTO 4: OPERATORS MATRIX & ERGONOMICS -->
+      <div class="glass-card rounded-3xl p-6 space-y-4">
+        <div class="flex items-center justify-between border-b border-white/[0.06] pb-3">
+          <div>
+            <h3 class="font-bold text-sm text-white flex items-center gap-2">
+              <span>⚙️ ماتریس عملگرها و تنظیمات ورودی</span>
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">عملگرهای مورد نظرتان را برای این دست از مسابقه انتخاب کنید</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="btnPresetAll" class="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-[11px] text-slate-300 font-medium transition cursor-pointer">همه عملگرها</button>
+            <button id="btnPresetMulOnly" class="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-[11px] text-slate-300 font-medium transition cursor-pointer">فقط ضرب</button>
+            <button id="btnPresetAddSub" class="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-[11px] text-slate-300 font-medium transition cursor-pointer">جمع و تفریق</button>
+          </div>
+        </div>
+
+        <!-- Chips Checkboxes -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5">
+          
+          <label class="op-chip flex items-center justify-between p-3 rounded-xl bg-slate-950/70 border border-white/[0.06] hover:border-cyan-500/40 cursor-pointer transition select-none">
+            <div class="flex items-center gap-2">
+              <input type="checkbox" id="chkOpAdd" checked class="w-4 h-4 rounded text-cyan-500 bg-slate-900 border-slate-700">
+              <span class="text-xs font-semibold">جمع (+)</span>
+            </div>
+            <span class="num-font text-cyan-400 font-bold">+</span>
+          </label>
+
+          <label class="op-chip flex items-center justify-between p-3 rounded-xl bg-slate-950/70 border border-white/[0.06] hover:border-cyan-500/40 cursor-pointer transition select-none">
+            <div class="flex items-center gap-2">
+              <input type="checkbox" id="chkOpSub" checked class="w-4 h-4 rounded text-cyan-500 bg-slate-900 border-slate-700">
+              <span class="text-xs font-semibold">تفریق (−)</span>
+            </div>
+            <span class="num-font text-cyan-400 font-bold">−</span>
+          </label>
+
+          <label class="op-chip flex items-center justify-between p-3 rounded-xl bg-slate-950/70 border border-white/[0.06] hover:border-cyan-500/40 cursor-pointer transition select-none">
+            <div class="flex items-center gap-2">
+              <input type="checkbox" id="chkOpMul" checked class="w-4 h-4 rounded text-cyan-500 bg-slate-900 border-slate-700">
+              <span class="text-xs font-semibold">ضرب (×)</span>
+            </div>
+            <span class="num-font text-cyan-400 font-bold">×</span>
+          </label>
+
+          <label class="op-chip flex items-center justify-between p-3 rounded-xl bg-slate-950/70 border border-white/[0.06] hover:border-cyan-500/40 cursor-pointer transition select-none">
+            <div class="flex items-center gap-2">
+              <input type="checkbox" id="chkOpDiv" checked class="w-4 h-4 rounded text-cyan-500 bg-slate-900 border-slate-700">
+              <span class="text-xs font-semibold">تقسیم (÷)</span>
+            </div>
+            <span class="num-font text-cyan-400 font-bold">÷</span>
+          </label>
+
+          <label class="op-chip flex items-center justify-between p-3 rounded-xl bg-slate-950/70 border border-white/[0.06] hover:border-cyan-500/40 cursor-pointer transition select-none">
+            <div class="flex items-center gap-2">
+              <input type="checkbox" id="chkOpMod" class="w-4 h-4 rounded text-cyan-500 bg-slate-900 border-slate-700">
+              <span class="text-xs font-semibold">باقیمانده (%)</span>
+            </div>
+            <span class="num-font text-cyan-400 font-bold">%</span>
+          </label>
+
+          <label class="op-chip flex items-center justify-between p-3 rounded-xl bg-slate-950/70 border border-white/[0.06] hover:border-cyan-500/40 cursor-pointer transition select-none">
+            <div class="flex items-center gap-2">
+              <input type="checkbox" id="chkOpPow" class="w-4 h-4 rounded text-cyan-500 bg-slate-900 border-slate-700">
+              <span class="text-xs font-semibold">توان (x², x³)</span>
+            </div>
+            <span class="num-font text-cyan-400 font-bold">x²</span>
+          </label>
+
+        </div>
+
+        <!-- Input Ergonomics -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+          
+          <div class="p-3.5 rounded-xl bg-slate-950/60 border border-white/[0.05] flex items-center justify-between">
+            <div>
               <div class="text-xs font-bold text-white flex items-center gap-1.5">
                 <span>مود ذن نام‌پد (Zen Auto-Submit)</span>
-                <span class="text-[10px] bg-emerald-950 border border-emerald-800 text-emerald-400 px-1 rounded font-mono">صفر تأخیر</span>
+                <span class="text-[10px] bg-emerald-950 border border-emerald-700 text-emerald-400 px-1 rounded font-mono">حذف تاخیر</span>
               </div>
-              <div class="text-[11px] text-slate-400">ثبت خودکار به محض وارد کردن طول رقم پاسخ (بدون نیاز به زدن اینتر)</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">ثبت آنی به محض تکمیل طول رقم پاسخ بدون فشردن اینتر</div>
             </div>
             <label class="relative inline-flex items-center cursor-pointer ml-2">
               <input type="checkbox" id="toggleZenMode" checked class="sr-only peer">
@@ -375,12 +482,10 @@ export function renderAppHtml() {
             </label>
           </div>
 
-          <div class="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between">
-            <div class="space-y-0.5">
-              <div class="text-xs font-bold text-white flex items-center gap-1.5">
-                <span>کلید اینتر اختیاری (Enter-to-Submit)</span>
-              </div>
-              <div class="text-[11px] text-slate-400">تأیید دستی برای ارقام با طول متغیر به دلخواه کاربر</div>
+          <div class="p-3.5 rounded-xl bg-slate-950/60 border border-white/[0.05] flex items-center justify-between">
+            <div>
+              <div class="text-xs font-bold text-white">کلید اینتر دستی (Enter-to-Submit)</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">صرفاً با زدن اینتر پاسخ ارزیابی شود (مناسب افراد دقیق)</div>
             </div>
             <label class="relative inline-flex items-center cursor-pointer ml-2">
               <input type="checkbox" id="toggleEnterMode" class="sr-only peer">
@@ -394,168 +499,170 @@ export function renderAppHtml() {
 
     </section>
 
-    <!-- SCREEN 2: ACTIVE RUN INTERFACE (144Hz Zero-Allocation Loop) -->
+    <!-- ============================================== -->
+    <!-- SCREEN 2: ACTIVE IMMERSION RUN INTERFACE -->
+    <!-- ============================================== -->
     <section id="viewRun" class="hidden flex flex-col items-center justify-center max-w-3xl mx-auto w-full py-2">
       
       <!-- TOP TELEMETRY HUD -->
-      <div class="w-full bg-slate-900/90 border border-slate-800 rounded-2xl p-4 mb-4 backdrop-blur-md shadow-2xl">
+      <div class="w-full glass-card rounded-3xl p-5 mb-5 shadow-2xl space-y-4">
+        
+        <!-- Metrics Row -->
         <div class="grid grid-cols-4 items-center justify-between text-center gap-2">
           
-          <!-- Timer -->
           <div class="space-y-0.5">
-            <span class="text-[11px] font-medium text-slate-400">زمان</span>
-            <div id="hudTimer" class="num-font text-xl sm:text-2xl font-bold text-cyan-400 tracking-wider">00:30.000</div>
+            <span class="text-[11px] text-slate-400 font-medium">زمان</span>
+            <div id="hudTimer" class="num-font text-2xl sm:text-3xl font-extrabold text-cyan-400 tracking-wider">00:30.000</div>
           </div>
 
-          <!-- Live OPM / CPM -->
           <div class="space-y-0.5">
-            <span class="text-[11px] font-medium text-slate-400">عملیات در دقیقه (OPM)</span>
-            <div id="hudOpm" class="num-font text-xl sm:text-2xl font-bold text-emerald-400">0.0</div>
+            <span class="text-[11px] text-slate-400 font-medium">عملیات در دقیقه</span>
+            <div id="hudOpm" class="num-font text-2xl sm:text-3xl font-extrabold text-emerald-400">0.0</div>
           </div>
 
-          <!-- Streak & Multiplier -->
           <div class="space-y-0.5">
-            <span class="text-[11px] font-medium text-slate-400">زنجیره (Streak)</span>
+            <span class="text-[11px] text-slate-400 font-medium">زنجیره (Streak)</span>
             <div class="flex items-center justify-center gap-1.5">
-              <span id="hudStreak" class="num-font text-xl sm:text-2xl font-black text-amber-400">0</span>
+              <span id="hudStreak" class="num-font text-2xl sm:text-3xl font-black text-amber-400">0</span>
               <span id="hudMultiplier" class="text-xs font-mono font-bold px-1.5 py-0.5 rounded bg-amber-950 border border-amber-800 text-amber-300">x1</span>
             </div>
           </div>
 
-          <!-- Accuracy / Count -->
           <div class="space-y-0.5">
-            <span class="text-[11px] font-medium text-slate-400" id="hudProgressLabel">پاسخ‌های صحیح</span>
-            <div id="hudCounter" class="num-font text-xl sm:text-2xl font-bold text-slate-200">0</div>
+            <span class="text-[11px] text-slate-400 font-medium" id="hudProgressLabel">پاسخ‌های صحیح</span>
+            <div id="hudCounter" class="num-font text-2xl sm:text-3xl font-extrabold text-white">0</div>
           </div>
 
         </div>
 
         <!-- DYNAMIC PACING GHOST BAR -->
-        <div class="mt-4 pt-3 border-t border-slate-800/80 space-y-1.5">
-          <div class="flex items-center justify-between text-[11px] font-mono">
-            <span class="text-slate-400 flex items-center gap-1">
-              <span>👻 مقایسه با بهترین رکورد (PB Pace):</span>
-              <span id="txtGhostTarget" class="text-slate-300 font-bold">45.0 OPM</span>
+        <div class="pt-3 border-t border-white/[0.06] space-y-1.5">
+          <div class="flex items-center justify-between text-xs font-mono">
+            <span class="text-slate-400 flex items-center gap-1.5">
+              <span>👻 مقایسه با رکورد (PB):</span>
+              <span id="txtGhostTarget" class="text-slate-200 font-bold">45.0 OPM</span>
             </span>
             <span id="txtGhostDelta" class="text-emerald-400 font-bold">+0.0s برابر</span>
           </div>
-          <div class="w-full h-2 rounded-full bg-slate-950 overflow-hidden relative">
+          <div class="w-full h-2.5 rounded-full bg-slate-950 overflow-hidden relative border border-white/[0.06]">
             <!-- Center line -->
-            <div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-slate-700 z-10"></div>
-            <!-- Dynamic pace indicator -->
+            <div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-slate-600 z-10"></div>
+            <!-- Ghost Fill bar -->
             <div id="barGhostFill" class="h-full bg-gradient-to-r from-cyan-500 to-emerald-400 transition-all duration-150 rounded-full" style="width: 50%;"></div>
           </div>
         </div>
 
       </div>
 
-      <!-- PROBLEM CANVAS (FIXED BOUNDING BOX ZERO-LAYOUT-SHIFT) -->
-      <div id="problemContainer" class="w-full relative rounded-3xl bg-slate-900 border-2 border-slate-800 p-8 sm:p-14 flex flex-col items-center justify-center shadow-2xl transition-all duration-100 min-h-[220px]">
+      <!-- PROBLEM STAGE (FIXED BOUNDING BOX ZERO LAYOUT SHIFT) -->
+      <div id="problemContainer" class="w-full glass-card rounded-3xl p-8 sm:p-14 flex flex-col items-center justify-center shadow-2xl relative min-h-[260px] border-2 border-white/[0.08]">
         
-        <!-- Subtle problem index tag -->
-        <div class="absolute top-4 left-4 text-xs font-mono text-slate-400" id="lblProblemIndex">#1</div>
-        <div class="absolute top-4 right-4 text-xs font-mono text-slate-400" id="lblOpCategory">MULTIPLICATION</div>
+        <!-- Category & Problem Index Tag -->
+        <div class="absolute top-4 left-5 text-xs font-mono text-slate-400" id="lblProblemIndex">#1</div>
+        <div class="absolute top-4 right-5 text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider" id="lblOpCategory">MULTIPLICATION</div>
 
-        <!-- Math Expression Display -->
-        <div class="text-center space-y-3">
-          <div id="txtProblemExpression" class="num-font text-4xl sm:text-6xl font-extrabold text-white tracking-widest leading-none">
+        <!-- Expression -->
+        <div class="text-center space-y-4">
+          <div id="txtProblemExpression" class="num-font text-5xl sm:text-7xl font-extrabold text-white tracking-widest leading-none">
             7 × 8
           </div>
           
-          <!-- Answer Input Echo with Blinking Cursor -->
-          <div class="inline-flex items-center justify-center min-w-[140px] px-4 py-2 rounded-xl bg-slate-950/80 border border-slate-700 font-mono text-3xl sm:text-4xl font-black text-cyan-400 tracking-wider">
+          <!-- Backlit Answer Input Box with Blinking Cursor -->
+          <div id="boxInputDisplay" class="inline-flex items-center justify-center min-w-[160px] h-16 px-6 rounded-2xl bg-slate-950/90 border-2 border-cyan-500/40 font-mono text-3xl sm:text-4xl font-black text-cyan-400 tracking-wider shadow-inner shadow-cyan-500/10 transition-colors">
             <span id="txtUserInputEcho" class="tabular-nums"></span>
-            <span id="cursorBlink" class="w-2.5 h-8 bg-cyan-400 inline-block animate-pulse ml-1 rounded-sm"></span>
+            <span id="cursorBlink" class="w-3 h-8 bg-cyan-400 inline-block animate-pulse ml-1 rounded-sm"></span>
           </div>
         </div>
 
       </div>
 
-      <!-- ON-SCREEN ARCADE NUMPAD (FOR TOUCH OR MOUSE) -->
-      <div class="w-full max-w-sm mt-4 grid grid-cols-3 gap-2">
-        <button class="numpad-btn py-3.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 active:scale-95 text-xl font-bold font-mono text-white transition cursor-pointer" data-val="7">7</button>
-        <button class="numpad-btn py-3.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 active:scale-95 text-xl font-bold font-mono text-white transition cursor-pointer" data-val="8">8</button>
-        <button class="numpad-btn py-3.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 active:scale-95 text-xl font-bold font-mono text-white transition cursor-pointer" data-val="9">9</button>
-        <button class="numpad-btn py-3.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 active:scale-95 text-xl font-bold font-mono text-white transition cursor-pointer" data-val="4">4</button>
-        <button class="numpad-btn py-3.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 active:scale-95 text-xl font-bold font-mono text-white transition cursor-pointer" data-val="5">5</button>
-        <button class="numpad-btn py-3.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 active:scale-95 text-xl font-bold font-mono text-white transition cursor-pointer" data-val="6">6</button>
-        <button class="numpad-btn py-3.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 active:scale-95 text-xl font-bold font-mono text-white transition cursor-pointer" data-val="1">1</button>
-        <button class="numpad-btn py-3.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 active:scale-95 text-xl font-bold font-mono text-white transition cursor-pointer" data-val="2">2</button>
-        <button class="numpad-btn py-3.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 active:scale-95 text-xl font-bold font-mono text-white transition cursor-pointer" data-val="3">3</button>
-        <button class="numpad-btn py-3.5 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-rose-900/60 active:scale-95 text-lg font-bold font-mono text-rose-400 transition cursor-pointer" data-val="clear">C</button>
-        <button class="numpad-btn py-3.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 active:scale-95 text-xl font-bold font-mono text-white transition cursor-pointer" data-val="0">0</button>
-        <button class="numpad-btn py-3.5 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-cyan-900/60 active:scale-95 text-lg font-bold font-mono text-cyan-400 transition cursor-pointer" data-val="minus">−</button>
+      <!-- ERGONOMIC NUMPAD KEYBOARD (DESKTOP & MOBILE COMPATIBLE) -->
+      <div class="w-full max-w-sm mt-5 grid grid-cols-3 gap-2.5">
+        <button class="numpad-btn py-3.5 rounded-2xl glass-card text-2xl font-bold font-mono text-white active:scale-95 transition cursor-pointer" data-val="7">7</button>
+        <button class="numpad-btn py-3.5 rounded-2xl glass-card text-2xl font-bold font-mono text-white active:scale-95 transition cursor-pointer" data-val="8">8</button>
+        <button class="numpad-btn py-3.5 rounded-2xl glass-card text-2xl font-bold font-mono text-white active:scale-95 transition cursor-pointer" data-val="9">9</button>
+        <button class="numpad-btn py-3.5 rounded-2xl glass-card text-2xl font-bold font-mono text-white active:scale-95 transition cursor-pointer" data-val="4">4</button>
+        <button class="numpad-btn py-3.5 rounded-2xl glass-card text-2xl font-bold font-mono text-white active:scale-95 transition cursor-pointer" data-val="5">5</button>
+        <button class="numpad-btn py-3.5 rounded-2xl glass-card text-2xl font-bold font-mono text-white active:scale-95 transition cursor-pointer" data-val="6">6</button>
+        <button class="numpad-btn py-3.5 rounded-2xl glass-card text-2xl font-bold font-mono text-white active:scale-95 transition cursor-pointer" data-val="1">1</button>
+        <button class="numpad-btn py-3.5 rounded-2xl glass-card text-2xl font-bold font-mono text-white active:scale-95 transition cursor-pointer" data-val="2">2</button>
+        <button class="numpad-btn py-3.5 rounded-2xl glass-card text-2xl font-bold font-mono text-white active:scale-95 transition cursor-pointer" data-val="3">3</button>
+        <button class="numpad-btn py-3.5 rounded-2xl glass-card text-xl font-bold font-mono text-rose-400 active:scale-95 transition cursor-pointer" data-val="clear">C</button>
+        <button class="numpad-btn py-3.5 rounded-2xl glass-card text-2xl font-bold font-mono text-white active:scale-95 transition cursor-pointer" data-val="0">0</button>
+        <button class="numpad-btn py-3.5 rounded-2xl glass-card text-xl font-bold font-mono text-cyan-400 active:scale-95 transition cursor-pointer" data-val="minus">−</button>
       </div>
 
-      <!-- Quick Abort / Instructions footer -->
-      <div class="mt-4 flex items-center justify-between w-full max-w-sm text-xs text-slate-400">
+      <!-- Footer Action & Skip Hint -->
+      <div class="mt-4 flex items-center justify-between w-full max-w-sm text-xs text-slate-400 px-1">
         <button id="btnAbortRun" class="hover:text-rose-400 transition cursor-pointer">انصراف (Esc)</button>
-        <span class="font-mono">پشتیبانی کامل از ارقام فارسی ۱۲۳۴</span>
+        <button id="btnSkipProblem" class="hover:text-cyan-400 transition cursor-pointer">رد کردن سوال (Space)</button>
       </div>
 
     </section>
 
-    <!-- SCREEN 3: POST-RUN SUMMARY & WEAKNESS HEATMAP -->
+    <!-- ============================================== -->
+    <!-- SCREEN 3: POST-RUN SUMMARY & WEAKNESS DRILL -->
+    <!-- ============================================== -->
     <section id="viewSummary" class="hidden flex flex-col gap-6 max-w-4xl mx-auto w-full py-4">
       
-      <!-- Performance Card -->
-      <div class="rounded-3xl bg-slate-900/90 border border-slate-800 p-6 sm:p-8 backdrop-blur-md shadow-2xl relative overflow-hidden">
+      <div class="glass-card rounded-3xl p-6 sm:p-8 relative overflow-hidden shadow-2xl">
         
-        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-5">
+        <!-- Header & Elo Gain -->
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-white/[0.08] pb-5">
           <div>
-            <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-400 text-xs font-bold mb-1">
-              <span>نتیجه رکوردگیری</span>
+            <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-700/60 text-emerald-400 text-xs font-bold mb-1">
+              <span>مسابقه به پایان رسید</span>
             </div>
-            <h2 class="text-2xl sm:text-3xl font-black text-white" id="sumTitle">پایان مسابقه</h2>
+            <h2 class="text-2xl sm:text-3xl font-black text-white" id="sumTitle">کارنامه مسابقه mathgame</h2>
           </div>
-          <!-- Elo Gain Banner -->
-          <div class="flex items-center gap-3 bg-slate-950 px-4 py-2.5 rounded-2xl border border-slate-800">
+
+          <div class="flex items-center gap-3.5 bg-slate-950/80 px-5 py-3 rounded-2xl border border-white/[0.08]">
             <div class="text-right">
-              <div class="text-[11px] text-slate-400">امتیاز ریتینگ (ELO)</div>
-              <div class="num-font text-lg font-black text-cyan-400" id="sumEloChange">+24 (1248)</div>
+              <div class="text-[11px] text-slate-400">تغییر ریتینگ ELO</div>
+              <div class="num-font text-xl font-black text-cyan-400" id="sumEloChange">+24 (1248)</div>
             </div>
-            <div class="text-2xl" id="sumRankBadge">🌱</div>
+            <div class="text-3xl" id="sumRankBadge">🌱</div>
           </div>
         </div>
 
-        <!-- 4 Key Stats Grid -->
+        <!-- 4 Key Stat Cards -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 my-6">
-          <div class="p-4 rounded-xl bg-slate-950/80 border border-slate-800/80 text-center space-y-1">
+          <div class="p-4 rounded-2xl bg-slate-950/70 border border-white/[0.05] text-center space-y-1">
             <span class="text-xs text-slate-400">سرعت عملیات (OPM)</span>
             <div class="num-font text-2xl sm:text-3xl font-extrabold text-cyan-400" id="sumOpm">52.4</div>
           </div>
-          <div class="p-4 rounded-xl bg-slate-950/80 border border-slate-800/80 text-center space-y-1">
+          <div class="p-4 rounded-2xl bg-slate-950/70 border border-white/[0.05] text-center space-y-1">
             <span class="text-xs text-slate-400">دقت پاسخ‌ها (Accuracy)</span>
             <div class="num-font text-2xl sm:text-3xl font-extrabold text-emerald-400" id="sumAccuracy">96.2%</div>
           </div>
-          <div class="p-4 rounded-xl bg-slate-950/80 border border-slate-800/80 text-center space-y-1">
+          <div class="p-4 rounded-2xl bg-slate-950/70 border border-white/[0.05] text-center space-y-1">
             <span class="text-xs text-slate-400">زمان کل</span>
             <div class="num-font text-2xl sm:text-3xl font-extrabold text-amber-400" id="sumDuration">30.0s</div>
           </div>
-          <div class="p-4 rounded-xl bg-slate-950/80 border border-slate-800/80 text-center space-y-1">
-            <span class="text-xs text-slate-400">بهترین زنجیره (Max Streak)</span>
-            <div class="num-font text-2xl sm:text-3xl font-extrabold text-purple-400" id="sumMaxStreak">18</div>
+          <div class="p-4 rounded-2xl bg-slate-950/70 border border-white/[0.05] text-center space-y-1">
+            <span class="text-xs text-slate-400">بیشترین زنجیره (Max Streak)</span>
+            <div class="num-font text-2xl sm:text-3xl font-extrabold text-violet-400" id="sumMaxStreak">18</div>
           </div>
         </div>
 
-        <!-- HISTOGRAM OF LATENCY -->
-        <div class="space-y-2 mb-6">
+        <!-- REACTION TIME HISTOGRAM -->
+        <div class="space-y-2.5 mb-6">
           <div class="flex items-center justify-between text-xs">
-            <span class="font-bold text-slate-200">📊 توزیع زمان پاسخ‌دهی به تفکیک میلی‌ثانیه:</span>
-            <span class="text-slate-400 font-mono">Millisecond Response Histogram</span>
+            <span class="font-bold text-slate-200">📊 توزیع زمانی پاسخ‌دهی (Latency Histogram):</span>
+            <span class="text-slate-400 font-mono">Millisecond Response Curves</span>
           </div>
-          <div class="h-28 w-full bg-slate-950 rounded-xl p-3 border border-slate-800 flex items-end justify-between gap-3" id="boxHistogramBars">
+          <div class="h-32 w-full bg-slate-950/80 rounded-2xl p-4 border border-white/[0.06] flex items-end justify-between gap-3" id="boxHistogramBars">
             <!-- Dynamically populated bars -->
           </div>
         </div>
 
-        <!-- BOTTLENECKS / WEAKNESS MATRIX -->
+        <!-- BOTTLENECK COMBINATIONS -->
         <div class="space-y-3">
           <div class="flex items-center justify-between">
             <h3 class="text-sm font-bold text-slate-200 flex items-center gap-1.5">
-              <span>🚨 گلوگاه‌ها و محاسبات کند شما (Bottlenecks):</span>
+              <span>🚨 کندترین فکت‌های مغزی شما در این دست (Bottlenecks):</span>
             </h3>
-            <span class="text-xs text-slate-400">میانگین تأخیر هر فکت</span>
+            <span class="text-xs text-slate-400">میانگین تاخیر هر معادله</span>
           </div>
           
           <div id="boxBottlenecks" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
@@ -564,17 +671,21 @@ export function renderAppHtml() {
         </div>
 
         <!-- ACTIONS ROW -->
-        <div class="mt-8 pt-5 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3">
-          <button id="btnPlayAgain" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-black text-sm shadow-lg shadow-cyan-500/20 active:scale-95 transition cursor-pointer flex items-center gap-2">
+        <div class="mt-8 pt-5 border-t border-white/[0.08] flex flex-wrap items-center justify-between gap-3">
+          <button id="btnPlayAgain" class="px-7 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-500 to-emerald-400 hover:from-cyan-400 hover:to-emerald-300 text-slate-950 font-black text-sm shadow-xl shadow-cyan-500/20 active:scale-95 transition cursor-pointer flex items-center gap-2">
             <span>تکرار همین مسابقه</span>
             <span class="font-mono">↺</span>
           </button>
           
-          <button id="btnTrainWeaknessNow" class="px-5 py-3 rounded-xl bg-amber-950/70 border border-amber-700/60 hover:border-amber-500 text-amber-300 font-bold text-xs transition cursor-pointer flex items-center gap-1.5">
-            <span>🎯 تمرین فوری نقاط ضعف این دست</span>
+          <button id="btnTrainWeaknessNow" class="px-5 py-3.5 rounded-2xl bg-amber-950/60 border border-amber-600/60 hover:border-amber-400 text-amber-300 font-bold text-xs transition cursor-pointer flex items-center gap-2">
+            <span>🎯 تمرین فوری همین فکت‌های کند</span>
           </button>
 
-          <button id="btnReturnHub" class="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition cursor-pointer">
+          <button id="btnShareSummary" class="px-5 py-3.5 rounded-2xl glass-card hover:border-cyan-500/50 text-slate-200 text-xs font-bold transition cursor-pointer flex items-center gap-1.5">
+            <span>📋 اشتراک‌گذاری رکورد</span>
+          </button>
+
+          <button id="btnReturnHub" class="px-5 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition cursor-pointer">
             بازگشت به منو
           </button>
         </div>
@@ -583,56 +694,53 @@ export function renderAppHtml() {
 
     </section>
 
-    <!-- SCREEN 4: GLOBAL & PROVINCIAL LEADERBOARDS -->
+    <!-- ============================================== -->
+    <!-- SCREEN 4: GLOBAL & PROVINCIAL LEADERBOARD -->
+    <!-- ============================================== -->
     <section id="viewLeaderboard" class="hidden flex flex-col gap-6 max-w-4xl mx-auto w-full py-4">
       
-      <div class="rounded-3xl bg-slate-900/90 border border-slate-800 p-6 sm:p-8 backdrop-blur-md shadow-2xl">
-        
-        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-5">
+      <div class="glass-card rounded-3xl p-6 sm:p-8 shadow-2xl">
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-white/[0.08] pb-5">
           <div>
             <h2 class="text-2xl sm:text-3xl font-black text-white flex items-center gap-2">
               <span>🏆 جدول برترین محاسبان mathgame</span>
             </h2>
-            <p class="text-xs text-slate-400 mt-1">رده‌بندی کشوری و استانی بر اساس بیشترین OPM و ریتینگ Elo</p>
+            <p class="text-xs text-slate-400 mt-1">رده‌بندی کشوری و استانی بر مبنای بیشترین OPM و امتیاز ریتینگ Elo</p>
           </div>
           <button id="btnBackFromLeaderboard" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 transition cursor-pointer">
             بازگشت
           </button>
         </div>
 
-        <!-- Filters Row: Mode, Period, Province -->
+        <!-- Filters Row -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 my-5">
-          
-          <!-- Mode filter -->
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1">حالت بازی:</label>
-            <select id="selLbMode" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500">
+            <label class="block text-xs font-semibold text-slate-400 mb-1">حالت مسابقه:</label>
+            <select id="selLbMode" class="w-full bg-slate-950 border border-white/[0.08] rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-500">
               <option value="all">همه حالت‌ها</option>
               <option value="blitz_30">حمله سرعتی (۳۰s)</option>
               <option value="blitz_60">حمله سرعتی (۶۰s)</option>
               <option value="sprint_20">دوی ۲۰ سوال</option>
               <option value="sprint_50">دوی ۵۰ سوال</option>
-              <option value="dojo_tier1">ضرب‌خانه: تک رقمی</option>
-              <option value="dojo_tier2">ضرب‌خانه: ۱۱ تا ۱۹</option>
+              <option value="dojo_tier1">ضرب‌خانه: جدول تک رقمی</option>
+              <option value="dojo_tier2">ضرب‌خانه: اعداد ۱۱ تا ۱۹</option>
               <option value="dojo_tier3">ضرب‌خانه: دو رقمی در دو رقمی</option>
-              <option value="survival">چالش بقا (مرگ ناگهانی)</option>
+              <option value="survival">مرگ ناگهانی (Sudden Death)</option>
             </select>
           </div>
 
-          <!-- Period filter -->
           <div>
             <label class="block text-xs font-semibold text-slate-400 mb-1">بازه زمانی:</label>
-            <select id="selLbPeriod" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500">
+            <select id="selLbPeriod" class="w-full bg-slate-950 border border-white/[0.08] rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-500">
               <option value="all">همه‌زمان‌ها (All-Time)</option>
               <option value="weekly">این هفته (Weekly)</option>
               <option value="today">امروز (Today)</option>
             </select>
           </div>
 
-          <!-- Province filter -->
           <div>
             <label class="block text-xs font-semibold text-slate-400 mb-1">استان / منطقه:</label>
-            <select id="selLbProvince" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500">
+            <select id="selLbProvince" class="w-full bg-slate-950 border border-white/[0.08] rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-500">
               <option value="all">سراسر ایران (کشوری)</option>
               <option value="tehran">تهران</option>
               <option value="isfahan">اصفهان</option>
@@ -648,25 +756,24 @@ export function renderAppHtml() {
               <option value="qom">قم</option>
             </select>
           </div>
-
         </div>
 
         <!-- Table Container -->
-        <div class="overflow-x-auto rounded-xl border border-slate-800">
+        <div class="overflow-x-auto rounded-2xl border border-white/[0.08]">
           <table class="w-full text-right text-xs">
-            <thead class="bg-slate-950 text-slate-400 border-b border-slate-800 font-medium">
+            <thead class="bg-slate-950 text-slate-400 border-b border-white/[0.06] font-medium">
               <tr>
-                <th class="p-3 w-12 text-center">رتبه</th>
-                <th class="p-3">نام کاربر</th>
-                <th class="p-3 text-center">استان</th>
-                <th class="p-3 text-center">ریتینگ ELO</th>
-                <th class="p-3 text-center">سرعت (OPM)</th>
-                <th class="p-3 text-center">دقت</th>
-                <th class="p-3 text-center">مود</th>
+                <th class="p-3.5 w-14 text-center">رتبه</th>
+                <th class="p-3.5">نام کاربر</th>
+                <th class="p-3.5 text-center">استان</th>
+                <th class="p-3.5 text-center">ریتینگ ELO</th>
+                <th class="p-3.5 text-center">سرعت (OPM)</th>
+                <th class="p-3.5 text-center">دقت</th>
+                <th class="p-3.5 text-center">مود</th>
               </tr>
             </thead>
-            <tbody id="tblLeaderboardBody" class="divide-y divide-slate-800/60 font-mono">
-              <!-- Populated dynamically -->
+            <tbody id="tblLeaderboardBody" class="divide-y divide-white/[0.04] font-mono">
+              <!-- Dynamically populated -->
             </tbody>
           </table>
         </div>
@@ -675,14 +782,16 @@ export function renderAppHtml() {
 
     </section>
 
-    <!-- SCREEN 5: USER ANALYTICS & WEAKNESS DEEP DIVE -->
+    <!-- ============================================== -->
+    <!-- SCREEN 5: USER ANALYTICS & DEEP DIVE -->
+    <!-- ============================================== -->
     <section id="viewAnalytics" class="hidden flex flex-col gap-6 max-w-4xl mx-auto w-full py-4">
       
-      <div class="rounded-3xl bg-slate-900/90 border border-slate-800 p-6 sm:p-8 backdrop-blur-md shadow-2xl">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-5">
+      <div class="glass-card rounded-3xl p-6 sm:p-8 shadow-2xl">
+        <div class="flex items-center justify-between border-b border-white/[0.08] pb-5">
           <div>
-            <h2 class="text-2xl font-black text-white">📊 پرونده جامع آنالیز و نقاط ضعف mathgame</h2>
-            <p class="text-xs text-slate-400 mt-1">بررسی الگوهای ذهنی، کندی فکت‌های محاسباتی و سیر پیشرفت ریتینگ</p>
+            <h2 class="text-2xl font-black text-white">📊 پرونده جامع آنالیز و عیب‌یابی مغز در mathgame</h2>
+            <p class="text-xs text-slate-400 mt-1">بررسی الگوهای کندی ذهن، گلوگاه‌های جدول ضرب و روند پیشرفت ریتینگ</p>
           </div>
           <button id="btnBackFromAnalytics" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 transition cursor-pointer">
             بازگشت
@@ -699,24 +808,24 @@ export function renderAppHtml() {
   </main>
 
   <!-- MODAL: USER PROFILE & SETTINGS -->
-  <div id="modalProfile" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-5">
-      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+  <div id="modalProfile" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="glass-card rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl space-y-5 border border-white/[0.12]">
+      <div class="flex items-center justify-between border-b border-white/[0.08] pb-3">
         <h3 class="font-bold text-base text-white flex items-center gap-2">
           <span>👤 تنظیمات حساب کاربری</span>
         </h3>
         <button id="btnCloseProfileModal" class="text-slate-400 hover:text-white text-lg">✕</button>
       </div>
 
-      <div class="space-y-4">
+      <div class="space-y-4 text-xs">
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">نام کاربری در لیدربرد:</label>
-          <input type="text" id="iptUsername" maxlength="20" placeholder="مثلاً: آرش_ریاضی" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500">
+          <label class="block font-semibold text-slate-300 mb-1.5">نام کاربری در رده‌بندی:</label>
+          <input type="text" id="iptUsername" maxlength="20" placeholder="مثلاً: سهراب_محاسب" class="w-full bg-slate-950 border border-white/[0.1] rounded-xl px-3.5 py-3 text-sm text-white focus:outline-none focus:border-cyan-500">
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">استان سکونت:</label>
-          <select id="selProfileProvince" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500">
+          <label class="block font-semibold text-slate-300 mb-1.5">استان سکونت:</label>
+          <select id="selProfileProvince" class="w-full bg-slate-950 border border-white/[0.1] rounded-xl px-3.5 py-3 text-sm text-white focus:outline-none focus:border-cyan-500">
             <option value="tehran">تهران</option>
             <option value="isfahan">اصفهان</option>
             <option value="fars">فارس</option>
@@ -733,47 +842,55 @@ export function renderAppHtml() {
           </select>
         </div>
 
-        <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs space-y-1">
+        <div class="p-3.5 rounded-xl bg-slate-950/70 border border-white/[0.05] space-y-1.5">
           <div class="flex justify-between text-slate-400">
             <span>شناسه اختصاصی:</span>
             <span class="font-mono text-cyan-400" id="txtProfileUserId">usr_...</span>
           </div>
           <div class="flex justify-between text-slate-400">
-            <span>رتبه و ریتینگ فعلی:</span>
+            <span>ریتینگ ELO فعلی:</span>
             <span class="font-mono text-emerald-400 font-bold" id="txtProfileElo">1200 ELO</span>
           </div>
         </div>
       </div>
 
       <div class="flex items-center justify-end gap-2 pt-2">
-        <button id="btnSaveProfile" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-bold text-xs shadow-lg shadow-cyan-500/20 transition cursor-pointer">
+        <button id="btnSaveProfile" class="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-400 hover:from-cyan-400 hover:to-emerald-300 text-slate-950 font-bold text-xs shadow-lg shadow-cyan-500/20 transition cursor-pointer">
           ذخیره تغییرات
         </button>
       </div>
     </div>
   </div>
 
-  <!-- APPLICATION ENGINE SCRIPT (VANILLA ES-MODULE / ZERO GC RUNTIME) -->
+  <!-- APPLICATION CORE JAVASCRIPT ENGINE -->
   <script type="module">
     // ==========================================
-    // 1. STATE & LOCAL ENGINE INITIALIZATION
+    // 1. STATE & CONSTANTS
     // ==========================================
-
-    const PROVINCE_NAMES = {
-      tehran: 'تهران',
-      isfahan: 'اصفهان',
-      fars: 'فارس',
-      khorasan_razavi: 'خراسان رضوی',
-      east_azerbaijan: 'آذربایجان شرقی',
-      khuzestan: 'خوزستان',
-      gilan: 'گیلان',
-      mazandaran: 'مازندران',
-      alborz: 'البرز',
-      kerman: 'کرمان',
-      yazd: 'یزد',
-      qom: 'قم',
-      other: 'ایران'
+    const PROVINCES = {
+      tehran: 'تهران', isfahan: 'اصفهان', fars: 'فارس',
+      khorasan_razavi: 'خراسان رضوی', east_azerbaijan: 'آذربایجان شرقی',
+      khuzestan: 'خوزستان', gilan: 'گیلان', mazandaran: 'مازندران',
+      alborz: 'البرز', kerman: 'کرمان', yazd: 'یزد', qom: 'قم', other: 'ایران'
     };
+
+    const RANKS = [
+      { minElo: 0, titleFa: 'تازه‌کار', color: '#94a3b8', badge: '🌱' },
+      { minElo: 1100, titleFa: 'کارآموز', color: '#38bdf8', badge: '⚡' },
+      { minElo: 1300, titleFa: 'محاسب برتر', color: '#34d399', badge: '🔥' },
+      { minElo: 1500, titleFa: 'خبره محاسبات', color: '#fbbf24', badge: '💎' },
+      { minElo: 1700, titleFa: 'استاد سرعت', color: '#f43f5e', badge: '👑' },
+      { minElo: 1900, titleFa: 'گرندمستر ذهنی', color: '#a855f7', badge: '🪐' },
+      { minElo: 2100, titleFa: 'نابغه ملی', color: '#ec4899', badge: '🏆' },
+    ];
+
+    function getRank(elo) {
+      let current = RANKS[0];
+      for (const r of RANKS) {
+        if (elo >= r.minElo) current = r;
+      }
+      return current;
+    }
 
     const STATE = {
       user: {
@@ -789,22 +906,14 @@ export function renderAppHtml() {
         lang: 'fa'
       },
       config: {
-        mode: 'blitz', // blitz, sprint, dojo, survival
-        subOption: '30', // e.g. 30s, 60s, 20q, 50q, tier1, tier2, etc.
-        operators: {
-          add: true,
-          sub: true,
-          mul: true,
-          div: true,
-          mod: false,
-          pow: false
-        },
-        dojoTier: 1,
-        dojoBounds: { minA: 1, maxA: 9, minB: 1, maxB: 9 }
+        mode: 'blitz',
+        subOption: '30',
+        operators: { add: true, sub: true, mul: true, div: true, mod: false, pow: false },
+        dojoTier: 1
       },
       pb: {
-        blitz_30: 40.0,
-        blitz_60: 42.0,
+        blitz_30: 42.0,
+        blitz_60: 45.0,
         sprint_20: 20000,
         sprint_50: 55000,
         survival: 25
@@ -813,55 +922,44 @@ export function renderAppHtml() {
       customWeaknessProblems: null
     };
 
-    // Load LocalStorage cache with mathgame prefix
-    function loadLocalState() {
+    function loadLocal() {
       try {
-        const storedUser = localStorage.getItem('mathgame_user');
-        if (storedUser) {
-          STATE.user = JSON.parse(storedUser);
+        const u = localStorage.getItem('mathgame_user');
+        if (u) {
+          STATE.user = JSON.parse(u);
         } else {
-          // Generate new anonymous user
-          const randomId = 'usr_' + Math.random().toString(36).substring(2, 10);
-          const randomNum = Math.floor(100 + Math.random() * 900);
-          STATE.user = {
-            id: randomId,
-            username: 'کاربر_' + randomNum,
-            province: 'tehran',
-            elo: 1200
-          };
-          saveLocalState();
+          const rId = 'usr_' + Math.random().toString(36).substring(2, 10);
+          const rNum = Math.floor(100 + Math.random() * 900);
+          STATE.user = { id: rId, username: 'محاسب_' + rNum, province: 'tehran', elo: 1200 };
+          saveLocal();
         }
 
-        const storedSettings = localStorage.getItem('mathgame_settings');
-        if (storedSettings) {
-          Object.assign(STATE.settings, JSON.parse(storedSettings));
-        }
+        const s = localStorage.getItem('mathgame_settings');
+        if (s) Object.assign(STATE.settings, JSON.parse(s));
 
-        const storedPb = localStorage.getItem('mathgame_pb');
-        if (storedPb) {
-          Object.assign(STATE.pb, JSON.parse(storedPb));
-        }
+        const p = localStorage.getItem('mathgame_pb');
+        if (p) Object.assign(STATE.pb, JSON.parse(p));
       } catch (e) {
-        console.warn('LocalStorage error:', e);
+        console.warn('Storage read error:', e);
       }
     }
 
-    function saveLocalState() {
+    function saveLocal() {
       try {
         localStorage.setItem('mathgame_user', JSON.stringify(STATE.user));
         localStorage.setItem('mathgame_settings', JSON.stringify(STATE.settings));
         localStorage.setItem('mathgame_pb', JSON.stringify(STATE.pb));
       } catch (e) {
-        console.warn('LocalStorage write failed:', e);
+        console.warn('Storage write error:', e);
       }
     }
 
     // ==========================================
-    // 2. SYNTHETIC WEB AUDIO API ENGINE
+    // 2. SYNTHETIC AUDIO & HAPTIC ENGINE
     // ==========================================
     let audioCtx = null;
 
-    function getAudioContext() {
+    function unlockAudio() {
       if (!audioCtx) {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         audioCtx = new AudioContext();
@@ -869,97 +967,86 @@ export function renderAppHtml() {
       if (audioCtx.state === 'suspended') {
         audioCtx.resume();
       }
-      return audioCtx;
     }
 
-    // Cherry MX mechanical keyboard switch synthetic sound
-    function playMechanicalClick() {
+    window.addEventListener('pointerdown', unlockAudio, { once: true });
+    window.addEventListener('keydown', unlockAudio, { once: true });
+
+    function playTactileClick() {
       if (!STATE.settings.audio) return;
       try {
-        const ctx = getAudioContext();
-        const now = ctx.currentTime;
+        unlockAudio();
+        const now = audioCtx.currentTime;
 
-        // 1. Transient burst
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-
+        // Mechanical switch click transient
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(1400, now);
-        osc.frequency.exponentialRampToValueAtTime(350, now + 0.022);
+        osc.frequency.setValueAtTime(1600, now);
+        osc.frequency.exponentialRampToValueAtTime(320, now + 0.025);
 
-        gain.gain.setValueAtTime(0.3, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.025);
+        gain.gain.setValueAtTime(0.28, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.028);
 
         osc.connect(gain);
-        gain.connect(ctx.destination);
-
+        gain.connect(audioCtx.destination);
         osc.start(now);
-        osc.stop(now + 0.028);
+        osc.stop(now + 0.03);
 
-        // 2. Secondary micro pop
-        const pop = ctx.createOscillator();
-        const popGain = ctx.createGain();
-        pop.type = 'sine';
-        pop.frequency.setValueAtTime(450, now);
-        popGain.gain.setValueAtTime(0.2, now);
-        popGain.gain.exponentialRampToValueAtTime(0.001, now + 0.018);
-        pop.connect(popGain);
-        popGain.connect(ctx.destination);
-        pop.start(now);
-        pop.stop(now + 0.02);
+        // Tactile micro haptic
+        if (navigator.vibrate) navigator.vibrate(15);
       } catch (e) {}
     }
 
-    // Low error buzz
     function playErrorBuzz() {
       if (!STATE.settings.audio) return;
       try {
-        const ctx = getAudioContext();
-        const now = ctx.currentTime;
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
+        unlockAudio();
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
 
         osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(120, now);
-        osc.frequency.linearRampToValueAtTime(75, now + 0.12);
+        osc.frequency.setValueAtTime(110, now);
+        osc.frequency.linearRampToValueAtTime(65, now + 0.14);
 
         gain.gain.setValueAtTime(0.4, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
 
         osc.connect(gain);
-        gain.connect(ctx.destination);
-
+        gain.connect(audioCtx.destination);
         osc.start(now);
-        osc.stop(now + 0.15);
+        osc.stop(now + 0.17);
+
+        if (navigator.vibrate) navigator.vibrate([30, 20, 30]);
       } catch (e) {}
     }
 
-    // Milestone streak chime
     function playStreakChime(multiplier) {
       if (!STATE.settings.audio) return;
       try {
-        const ctx = getAudioContext();
-        const now = ctx.currentTime;
-        const freqs = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+        unlockAudio();
+        const now = audioCtx.currentTime;
+        const freqs = [523.25, 659.25, 783.99, 1046.50];
         freqs.forEach((freq, idx) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
           osc.type = 'sine';
           osc.frequency.setValueAtTime(freq, now + idx * 0.04);
-          gain.gain.setValueAtTime(0.18, now + idx * 0.04);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.04 + 0.18);
+          gain.gain.setValueAtTime(0.2, now + idx * 0.04);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.04 + 0.2);
           osc.connect(gain);
-          gain.connect(ctx.destination);
+          gain.connect(audioCtx.destination);
           osc.start(now + idx * 0.04);
-          osc.stop(now + idx * 0.04 + 0.2);
+          osc.stop(now + idx * 0.04 + 0.22);
         });
       } catch (e) {}
     }
 
     // ==========================================
-    // 3. MATH ENGINE & PROBLEM GENERATOR
+    // 3. ZERO-LAG PROBLEM GENERATOR
     // ==========================================
-    function getRandomInt(min, max) {
+    function rand(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
@@ -973,148 +1060,129 @@ export function renderAppHtml() {
           answer: picked.answer,
           expression: picked.expression || picked.problem,
           expectedLen: Math.abs(picked.answer).toString().length + (picked.answer < 0 ? 1 : 0),
-          category: 'WEAKNESS DRILL'
+          category: 'تمرین نقاط ضعف'
         };
       }
 
-      // Dojo Mode
       if (config.mode === 'dojo') {
         const tier = config.dojoTier || 1;
         let a, b;
-        if (tier === 1) {
-          a = getRandomInt(2, 9);
-          b = getRandomInt(2, 9);
-        } else if (tier === 2) {
-          if (Math.random() > 0.4) {
-            a = getRandomInt(11, 19);
-            b = getRandomInt(11, 19);
+        if (tier === 1) { // 1x1 to 9x9
+          a = rand(2, 9);
+          b = rand(2, 9);
+        } else if (tier === 2) { // 11x11 to 19x19 or squares
+          if (Math.random() > 0.45) {
+            a = rand(11, 19);
+            b = rand(11, 19);
           } else {
-            a = getRandomInt(11, 30);
+            a = rand(11, 30);
             b = a;
           }
-        } else if (tier === 3) {
-          a = getRandomInt(11, 99);
-          b = getRandomInt(11, 99);
+        } else if (tier === 3) { // World Cup: 2-digit x 2-digit
+          a = rand(12, 99);
+          b = rand(12, 99);
         } else {
-          const bounds = config.dojoBounds || { minA: 2, maxA: 15, minB: 2, maxB: 15 };
-          a = getRandomInt(bounds.minA, bounds.maxA);
-          b = getRandomInt(bounds.minB, bounds.maxB);
+          a = rand(2, 15);
+          b = rand(2, 15);
         }
 
         const answer = a * b;
         return {
-          a,
-          b,
-          op: '×',
-          answer,
+          a, b, op: '×', answer,
           expression: \`\${a} × \${b}\`,
           expectedLen: Math.abs(answer).toString().length + (answer < 0 ? 1 : 0),
-          category: 'DOJO MULTIPLICATION'
+          category: 'ضرب‌خانه تخصصی'
         };
       }
 
-      // Standard Matrix Modes
-      const ops = [];
-      if (config.operators.add) ops.push('+');
-      if (config.operators.sub) ops.push('-');
-      if (config.operators.mul) ops.push('×');
-      if (config.operators.div) ops.push('÷');
-      if (config.operators.mod) ops.push('%');
-      if (config.operators.pow) ops.push('^2');
+      const activeOps = [];
+      if (config.operators.add) activeOps.push('+');
+      if (config.operators.sub) activeOps.push('-');
+      if (config.operators.mul) activeOps.push('×');
+      if (config.operators.div) activeOps.push('÷');
+      if (config.operators.mod) activeOps.push('%');
+      if (config.operators.pow) activeOps.push('^2');
 
-      if (ops.length === 0) ops.push('+');
-      const op = ops[Math.floor(Math.random() * ops.length)];
+      if (activeOps.length === 0) activeOps.push('+');
+      const op = activeOps[Math.floor(Math.random() * activeOps.length)];
 
-      let a = 0, b = 0, answer = 0, expression = '', category = 'ARITHMETIC';
+      let a = 0, b = 0, answer = 0, expression = '', category = 'محاسبات پایه';
 
       switch (op) {
         case '+': {
-          const type = Math.random();
-          if (type < 0.4) {
-            a = getRandomInt(2, 9);
-            b = getRandomInt(2, 9);
-          } else if (type < 0.8) {
-            a = getRandomInt(12, 89);
-            b = getRandomInt(5, 45);
+          const r = Math.random();
+          if (r < 0.4) {
+            a = rand(2, 9); b = rand(2, 9);
+          } else if (r < 0.8) {
+            a = rand(12, 89); b = rand(6, 45);
           } else {
-            a = getRandomInt(25, 95);
-            b = getRandomInt(18, 98);
+            a = rand(25, 95); b = rand(18, 98);
           }
           answer = a + b;
           expression = \`\${a} + \${b}\`;
-          category = 'ADDITION';
+          category = 'جمع';
           break;
         }
         case '-': {
-          const type = Math.random();
-          if (type < 0.4) {
-            a = getRandomInt(5, 18);
-            b = getRandomInt(2, a);
+          const r = Math.random();
+          if (r < 0.4) {
+            a = rand(5, 18); b = rand(2, a);
           } else {
-            a = getRandomInt(25, 99);
-            b = getRandomInt(12, a - 2);
+            a = rand(25, 99); b = rand(12, a - 1);
           }
           answer = a - b;
           expression = \`\${a} − \${b}\`;
-          category = 'SUBTRACTION';
+          category = 'تفریق';
           break;
         }
         case '×': {
-          const type = Math.random();
-          if (type < 0.6) {
-            a = getRandomInt(2, 9);
-            b = getRandomInt(2, 9);
+          const r = Math.random();
+          if (r < 0.65) {
+            a = rand(2, 9); b = rand(2, 9);
           } else {
-            a = getRandomInt(11, 19);
-            b = getRandomInt(2, 9);
+            a = rand(11, 19); b = rand(2, 9);
           }
           answer = a * b;
           expression = \`\${a} × \${b}\`;
-          category = 'MULTIPLICATION';
+          category = 'ضرب';
           break;
         }
         case '÷': {
-          b = getRandomInt(2, 9);
-          const quotient = getRandomInt(2, 12);
+          b = rand(2, 9);
+          const quotient = rand(2, 12);
           a = b * quotient;
           answer = quotient;
           expression = \`\${a} ÷ \${b}\`;
-          category = 'DIVISION';
+          category = 'تقسیم';
           break;
         }
         case '%': {
-          b = getRandomInt(3, 9);
-          a = getRandomInt(10, 50);
+          b = rand(3, 9);
+          a = rand(10, 50);
           answer = a % b;
           expression = \`\${a} mod \${b}\`;
-          category = 'MODULO';
+          category = 'باقیمانده';
           break;
         }
         case '^2': {
-          a = getRandomInt(2, 25);
+          a = rand(2, 25);
           b = 2;
           answer = a * a;
           expression = \`\${a}²\`;
-          category = 'SQUARE POWER';
+          category = 'مربع کامل';
           break;
         }
       }
 
-      const expectedLen = Math.abs(answer).toString().length + (answer < 0 ? 1 : 0);
-
       return {
-        a,
-        b,
-        op,
-        answer,
-        expression,
-        expectedLen,
+        a, b, op, answer, expression,
+        expectedLen: Math.abs(answer).toString().length + (answer < 0 ? 1 : 0),
         category
       };
     }
 
     // ==========================================
-    // 4. ZERO-ALLOCATION DOM & ACTIVE RUN LOOP
+    // 4. DOM REFS & BINDING
     // ==========================================
     const DOM = {
       viewHub: document.getElementById('viewHub'),
@@ -1134,24 +1202,35 @@ export function renderAppHtml() {
       btnLangToggle: document.getElementById('btnLangToggle'),
       btnNavLeaderboard: document.getElementById('btnNavLeaderboard'),
       btnNavAnalytics: document.getElementById('btnNavAnalytics'),
-      badgeNetwork: document.getElementById('badgeNetwork'),
-      txtEdgeStatus: document.getElementById('txtEdgeStatus'),
+      badgeEdgeStatus: document.getElementById('badgeEdgeStatus'),
+      txtEdgePoP: document.getElementById('txtEdgePoP'),
       badgeSyncQueue: document.getElementById('badgeSyncQueue'),
       txtSyncCount: document.getElementById('txtSyncCount'),
 
-      btnQuickStart: document.getElementById('btnQuickStart'),
-      btnTrainWeaknessHub: document.getElementById('btnTrainWeaknessHub'),
-      modeCards: document.querySelectorAll('.mode-card'),
-      lblActiveModeTitle: document.getElementById('lblActiveModeTitle'),
-      boxModeOptions: document.getElementById('boxModeOptions'),
-      toggleZenMode: document.getElementById('toggleZenMode'),
-      toggleEnterMode: document.getElementById('toggleEnterMode'),
+      btnHeroStart: document.getElementById('btnHeroStart'),
+      btnHeroWeakness: document.getElementById('btnHeroWeakness'),
+      btnEditProfilePencil: document.getElementById('btnEditProfilePencil'),
+      cardUsername: document.getElementById('cardUsername'),
+      cardElo: document.getElementById('cardElo'),
+      cardRankName: document.getElementById('cardRankName'),
+      cardRankIcon: document.getElementById('cardRankIcon'),
+      cardProvince: document.getElementById('cardProvince'),
+      cardBestPb: document.getElementById('cardBestPb'),
+      lblModeActive: document.getElementById('lblModeActive'),
+      subOptionsToolbar: document.getElementById('subOptionsToolbar'),
+      modeTiles: document.querySelectorAll('.mode-tile'),
+
       chkOpAdd: document.getElementById('chkOpAdd'),
       chkOpSub: document.getElementById('chkOpSub'),
       chkOpMul: document.getElementById('chkOpMul'),
       chkOpDiv: document.getElementById('chkOpDiv'),
       chkOpMod: document.getElementById('chkOpMod'),
       chkOpPow: document.getElementById('chkOpPow'),
+      btnPresetAll: document.getElementById('btnPresetAll'),
+      btnPresetMulOnly: document.getElementById('btnPresetMulOnly'),
+      btnPresetAddSub: document.getElementById('btnPresetAddSub'),
+      toggleZenMode: document.getElementById('toggleZenMode'),
+      toggleEnterMode: document.getElementById('toggleEnterMode'),
 
       hudTimer: document.getElementById('hudTimer'),
       hudOpm: document.getElementById('hudOpm'),
@@ -1166,9 +1245,11 @@ export function renderAppHtml() {
       problemContainer: document.getElementById('problemContainer'),
       txtProblemExpression: document.getElementById('txtProblemExpression'),
       txtUserInputEcho: document.getElementById('txtUserInputEcho'),
+      boxInputDisplay: document.getElementById('boxInputDisplay'),
       lblProblemIndex: document.getElementById('lblProblemIndex'),
       lblOpCategory: document.getElementById('lblOpCategory'),
       btnAbortRun: document.getElementById('btnAbortRun'),
+      btnSkipProblem: document.getElementById('btnSkipProblem'),
 
       sumTitle: document.getElementById('sumTitle'),
       sumEloChange: document.getElementById('sumEloChange'),
@@ -1181,6 +1262,7 @@ export function renderAppHtml() {
       boxBottlenecks: document.getElementById('boxBottlenecks'),
       btnPlayAgain: document.getElementById('btnPlayAgain'),
       btnTrainWeaknessNow: document.getElementById('btnTrainWeaknessNow'),
+      btnShareSummary: document.getElementById('btnShareSummary'),
       btnReturnHub: document.getElementById('btnReturnHub'),
 
       selLbMode: document.getElementById('selLbMode'),
@@ -1214,29 +1296,40 @@ export function renderAppHtml() {
       else if (name === 'analytics') DOM.viewAnalytics.classList.remove('hidden');
     }
 
-    function updateProfileHud() {
+    function updateProfileCard() {
+      const rank = getRank(STATE.user.elo);
       DOM.navUserName.textContent = STATE.user.username;
       DOM.navUserElo.textContent = STATE.user.elo + ' ELO';
-      DOM.txtProfileUserId.textContent = STATE.user.id;
-      DOM.txtProfileElo.textContent = STATE.user.elo + ' ELO';
+      DOM.navUserBadge.textContent = rank.badge;
+
+      DOM.cardUsername.textContent = STATE.user.username;
+      DOM.cardElo.textContent = STATE.user.elo + ' ELO';
+      DOM.cardRankName.textContent = rank.titleFa;
+      DOM.cardRankIcon.textContent = rank.badge;
+      DOM.cardProvince.textContent = PROVINCES[STATE.user.province] || 'تهران';
+      DOM.cardBestPb.textContent = (STATE.pb['blitz_30'] || 40.0).toFixed(1) + ' OPM';
+
       DOM.iptUsername.value = STATE.user.username;
       DOM.selProfileProvince.value = STATE.user.province || 'tehran';
+      DOM.txtProfileUserId.textContent = STATE.user.id;
+      DOM.txtProfileElo.textContent = STATE.user.elo + ' ELO';
     }
 
     // ==========================================
-    // 5. RUN LIFECYCLE & 144Hz TIMER LOOP
+    // 5. RUN ENGINE & ZERO-ALLOCATION 144Hz TICK
     // ==========================================
     let animFrameId = null;
 
     function startRun(customProblems = null) {
       const modeKey = \`\${STATE.config.mode}_\${STATE.config.subOption}\`;
-      const targetPb = STATE.pb[modeKey] || 40.0;
-      DOM.txtGhostTarget.textContent = (typeof targetPb === 'number' && targetPb < 100) ? targetPb.toFixed(1) + ' OPM' : '40.0 OPM';
+      const targetPb = STATE.pb[modeKey] || 45.0;
+      DOM.txtGhostTarget.textContent = (typeof targetPb === 'number' && targetPb < 120) ? targetPb.toFixed(1) + ' OPM' : '45.0 OPM';
 
       STATE.activeRun = {
         mode: modeKey,
         modeCategory: STATE.config.mode,
         subOption: STATE.config.subOption,
+        targetPb,
         startTime: performance.now(),
         lastProblemTime: performance.now(),
         durationMs: 0,
@@ -1308,20 +1401,20 @@ export function renderAppHtml() {
       }
 
       const minutes = elapsed / 60000;
-      if (minutes > 0.01) {
+      if (minutes > 0.008) {
         const liveOpm = (run.correctCount / minutes);
         DOM.hudOpm.textContent = liveOpm.toFixed(1);
 
-        const currentExpectedCount = (40.0 / 60) * (elapsed / 1000);
-        const diff = run.correctCount - currentExpectedCount;
-        const fillPercent = Math.min(Math.max(50 + diff * 5, 5), 95);
+        const expectedCount = (run.targetPb / 60) * (elapsed / 1000);
+        const diff = run.correctCount - expectedCount;
+        const fillPercent = Math.min(Math.max(50 + diff * 6, 5), 95);
         DOM.barGhostFill.style.width = fillPercent + '%';
 
         if (diff >= 0) {
-          DOM.txtGhostDelta.textContent = \`+\${(diff * 1.2).toFixed(1)}s جلوتر\`;
+          DOM.txtGhostDelta.textContent = \`+\${(diff * 1.1).toFixed(1)}s جلوتر\`;
           DOM.txtGhostDelta.className = 'text-emerald-400 font-bold';
         } else {
-          DOM.txtGhostDelta.textContent = \`\${(diff * 1.2).toFixed(1)}s عقب‌تر\`;
+          DOM.txtGhostDelta.textContent = \`\${(diff * 1.1).toFixed(1)}s عقب‌تر\`;
           DOM.txtGhostDelta.className = 'text-rose-400 font-bold';
         }
       }
@@ -1355,6 +1448,9 @@ export function renderAppHtml() {
       DOM.txtUserInputEcho.textContent = '';
       DOM.lblProblemIndex.textContent = '#' + (run.totalAnswered + 1);
       DOM.lblOpCategory.textContent = problem.category;
+
+      DOM.boxInputDisplay.classList.remove('border-rose-500', 'text-rose-400');
+      DOM.boxInputDisplay.classList.add('border-cyan-500/40', 'text-cyan-400');
     }
 
     function handleInputDigit(digit) {
@@ -1383,8 +1479,11 @@ export function renderAppHtml() {
 
       run.userTyped += digit;
       DOM.txtUserInputEcho.textContent = run.userTyped;
+      playTactileClick();
 
+      // Zen Auto-submit
       if (STATE.settings.zenMode && !STATE.settings.enterMode) {
+        // If length reached or matched
         if (run.userTyped.length >= run.currentProblem.expectedLen) {
           evaluateCurrentInput();
         }
@@ -1392,7 +1491,7 @@ export function renderAppHtml() {
     }
 
     function evaluateCurrentInput() {
-      if (!STATE.activeRun) return;
+      if (!STATE.activeRun || !STATE.activeRun.currentProblem) return;
       const run = STATE.activeRun;
       const problem = run.currentProblem;
       const typedNum = parseInt(run.userTyped, 10);
@@ -1418,39 +1517,57 @@ export function renderAppHtml() {
         run.currentStreak++;
         if (run.currentStreak > run.maxStreak) run.maxStreak = run.currentStreak;
 
-        DOM.problemContainer.classList.remove('animate-hit', 'animate-miss');
+        DOM.problemContainer.classList.remove('anim-hit', 'anim-miss');
         void DOM.problemContainer.offsetWidth;
-        DOM.problemContainer.classList.add('animate-hit');
-
-        playMechanicalClick();
+        DOM.problemContainer.classList.add('anim-hit');
 
         if (run.modeCategory === 'survival') {
           run.survivalRemainingMs = Math.min(run.survivalRemainingMs + 1500, 10000);
         }
 
         updateStreakDisplay(run.currentStreak);
-        DOM.hudCounter.textContent = run.correctCount;
+        if (run.modeCategory === 'sprint') {
+          DOM.hudCounter.textContent = \`\${run.correctCount} / \${run.targetQuestions}\`;
+        } else {
+          DOM.hudCounter.textContent = run.correctCount;
+        }
         nextProblem();
 
       } else {
         run.wrongCount++;
         run.currentStreak = 0;
 
-        DOM.problemContainer.classList.remove('animate-hit', 'animate-miss');
+        DOM.problemContainer.classList.remove('anim-hit', 'anim-miss');
         void DOM.problemContainer.offsetWidth;
-        DOM.problemContainer.classList.add('animate-miss');
+        DOM.problemContainer.classList.add('anim-miss');
 
         playErrorBuzz();
         updateStreakDisplay(0);
 
         if (run.modeCategory === 'survival') {
-          endRun();
+          endRun(\`باخت در چالش بقا! پاسخ شما: \${typedNum} | پاسخ درست: \${problem.answer}\`);
           return;
         }
 
-        run.userTyped = '';
-        DOM.txtUserInputEcho.textContent = '';
+        // Show brief red alert on input box then advance to keep flow fast
+        DOM.boxInputDisplay.classList.remove('border-cyan-500/40', 'text-cyan-400');
+        DOM.boxInputDisplay.classList.add('border-rose-500', 'text-rose-400');
+
+        setTimeout(() => {
+          if (STATE.activeRun) nextProblem();
+        }, 160);
       }
+    }
+
+    function skipCurrentProblem() {
+      if (!STATE.activeRun || !STATE.activeRun.currentProblem) return;
+      const run = STATE.activeRun;
+      run.totalAnswered++;
+      run.wrongCount++;
+      run.currentStreak = 0;
+      updateStreakDisplay(0);
+      playErrorBuzz();
+      nextProblem();
     }
 
     function updateStreakDisplay(streak) {
@@ -1460,7 +1577,7 @@ export function renderAppHtml() {
 
       if (streak >= 50) {
         multText = 'x5 MAX';
-        multClass = 'text-xs font-mono font-black px-1.5 py-0.5 rounded bg-purple-950 border border-purple-700 text-purple-300 streak-fire';
+        multClass = 'text-xs font-mono font-black px-1.5 py-0.5 rounded bg-purple-950 border border-purple-700 text-purple-300 flame-active';
         if (streak === 50) playStreakChime(5);
       } else if (streak >= 25) {
         multText = 'x4';
@@ -1479,7 +1596,7 @@ export function renderAppHtml() {
       DOM.hudMultiplier.className = multClass;
     }
 
-    function endRun() {
+    function endRun(customTitle = null) {
       if (!STATE.activeRun) return;
       if (animFrameId) cancelAnimationFrame(animFrameId);
 
@@ -1493,16 +1610,17 @@ export function renderAppHtml() {
 
       if (run.modeCategory === 'blitz' && opm > (STATE.pb[run.mode] || 0)) {
         STATE.pb[run.mode] = opm;
-        saveLocalState();
+        saveLocal();
+        updateProfileCard();
       }
 
+      DOM.sumTitle.textContent = customTitle || 'پایان مسابقه mathgame';
       DOM.sumOpm.textContent = opm.toFixed(1);
       DOM.sumAccuracy.textContent = accuracy + '%';
       DOM.sumDuration.textContent = (elapsedMs / 1000).toFixed(1) + 's';
       DOM.sumMaxStreak.textContent = run.maxStreak;
 
       renderHistogram(run.telemetry);
-
       const bottlenecks = analyzeBottlenecks(run.telemetry);
       renderBottlenecks(bottlenecks);
 
@@ -1539,21 +1657,21 @@ export function renderAppHtml() {
       DOM.boxHistogramBars.innerHTML = '';
 
       const labels = [
-        { key: '<300ms', label: 'کمتر از ۳۰۰ms', color: 'bg-emerald-500' },
-        { key: '300-500ms', label: '۳۰۰ - ۵۰۰ms', color: 'bg-cyan-500' },
-        { key: '500-800ms', label: '۵۰۰ - ۸۰۰ms', color: 'bg-amber-500' },
-        { key: '800-1200ms', label: '۸۰۰ - ۱۲۰۰ms', color: 'bg-orange-500' },
-        { key: '>1200ms', label: 'بیش از ۱.۲s', color: 'bg-rose-500' }
+        { key: '<300ms', label: 'زیر ۳۰۰ms', color: 'bg-emerald-400' },
+        { key: '300-500ms', label: '۳۰۰-۵۰۰ms', color: 'bg-cyan-400' },
+        { key: '500-800ms', label: '۵۰۰-۸۰۰ms', color: 'bg-amber-400' },
+        { key: '800-1200ms', label: '۸۰۰-۱۲۰۰ms', color: 'bg-orange-400' },
+        { key: '>1200ms', label: 'بالای ۱.۲s', color: 'bg-rose-400' }
       ];
 
       labels.forEach(b => {
         const count = bins[b.key] || 0;
-        const heightPct = Math.round((count / maxCount) * 85);
+        const heightPct = Math.round((count / maxCount) * 80);
         const col = document.createElement('div');
-        col.className = 'flex-1 flex flex-col items-center justify-end h-full gap-1';
+        col.className = 'flex-1 flex flex-col items-center justify-end h-full gap-1.5';
         col.innerHTML = \`
-          <span class="text-[10px] font-mono text-slate-300">\${count}</span>
-          <div class="w-full \${b.color} rounded-t-md transition-all duration-300" style="height: \${Math.max(heightPct, 6)}%"></div>
+          <span class="text-[10px] font-mono text-slate-300 font-bold">\${count}</span>
+          <div class="w-full \${b.color} rounded-t-lg transition-all duration-300 shadow-lg" style="height: \${Math.max(heightPct, 6)}%"></div>
           <span class="text-[9px] text-slate-400 font-mono truncate w-full text-center">\${b.key}</span>
         \`;
         DOM.boxHistogramBars.appendChild(col);
@@ -1566,14 +1684,8 @@ export function renderAppHtml() {
         const key = t.problem;
         if (!map[key]) {
           map[key] = {
-            problem: key,
-            a: t.a,
-            b: t.b,
-            op: t.op,
-            answer: t.answer,
-            totalLatency: 0,
-            count: 0,
-            errors: 0
+            problem: key, a: t.a, b: t.b, op: t.op, answer: t.answer,
+            totalLatency: 0, count: 0, errors: 0
           };
         }
         map[key].count++;
@@ -1600,14 +1712,14 @@ export function renderAppHtml() {
       bottlenecks.forEach(b => {
         const isSlow = b.avgLatency > 750;
         const card = document.createElement('div');
-        card.className = \`p-3 rounded-xl bg-slate-950 border \${isSlow ? 'border-amber-900/60' : 'border-slate-800'} flex items-center justify-between\`;
+        card.className = \`p-3.5 rounded-2xl bg-slate-950/80 border \${isSlow ? 'border-amber-700/50' : 'border-white/[0.06]'} flex items-center justify-between\`;
         card.innerHTML = \`
           <div>
-            <div class="font-mono text-base font-bold text-white">\${b.problem} = \${b.answer}</div>
-            <div class="text-[10px] text-slate-400">\${b.errors > 0 ? \`\${b.errors} خطای ثبت‌شده\` : 'بدون خطا'}</div>
+            <div class="num-font text-base font-bold text-white">\${b.problem} = \${b.answer}</div>
+            <div class="text-[10px] text-slate-400">\${b.errors > 0 ? \`\${b.errors} بار اشتباه\` : 'بدون خطا'}</div>
           </div>
           <div class="text-right">
-            <span class="num-font text-xs font-bold \${isSlow ? 'text-amber-400' : 'text-slate-300'}">\${b.avgLatency}ms</span>
+            <span class="num-font text-sm font-bold \${isSlow ? 'text-amber-400' : 'text-slate-300'}">\${b.avgLatency}ms</span>
             <div class="text-[9px] text-slate-400">میانگین</div>
           </div>
         \`;
@@ -1618,14 +1730,12 @@ export function renderAppHtml() {
     }
 
     // ==========================================
-    // 6. CLOUDFLARE WORKERS API & OFFLINE QUEUE
+    // 6. API CLIENT & OFFLINE QUEUE
     // ==========================================
     async function submitRunPayload(payload) {
-      const oldElo = STATE.user.elo;
-
       if (!navigator.onLine) {
         queueOfflineRun(payload);
-        DOM.sumEloChange.textContent = \`ذخیره شد (آفلاین) - \${oldElo} ELO\`;
+        DOM.sumEloChange.textContent = \`ذخیره شد (آفلاین) - \${STATE.user.elo} ELO\`;
         return;
       }
 
@@ -1640,21 +1750,19 @@ export function renderAppHtml() {
           const data = await res.json();
           if (data.newElo !== undefined) {
             STATE.user.elo = data.newElo;
-            saveLocalState();
-            updateProfileHud();
+            saveLocal();
+            updateProfileCard();
 
             const deltaText = data.delta >= 0 ? \`+\${data.delta}\` : \`\${data.delta}\`;
             DOM.sumEloChange.textContent = \`\${deltaText} (\${data.newElo} ELO)\`;
             if (data.rank) {
-              DOM.sumRankBadge.textContent = data.rank.badge || '🌱';
-              DOM.navUserBadge.textContent = data.rank.badge || '🌱';
+              DOM.sumRankBadge.textContent = data.rank.badge;
             }
           }
         } else {
           queueOfflineRun(payload);
         }
       } catch (err) {
-        console.warn('Network error during run submit:', err);
         queueOfflineRun(payload);
       }
     }
@@ -1684,9 +1792,7 @@ export function renderAppHtml() {
           localStorage.removeItem('mathgame_offline_queue');
           updateSyncQueueStatus();
         }
-      } catch (e) {
-        console.warn('Sync failed:', e);
-      }
+      } catch (e) {}
     }
 
     function updateSyncQueueStatus() {
@@ -1704,14 +1810,14 @@ export function renderAppHtml() {
     }
 
     // ==========================================
-    // 7. LEADERBOARDS & ANALYTICS FETCHERS
+    // 7. LEADERBOARDS & ANALYTICS
     // ==========================================
     async function loadLeaderboard() {
       const mode = DOM.selLbMode.value;
       const period = DOM.selLbPeriod.value;
       const province = DOM.selLbProvince.value;
 
-      DOM.tblLeaderboardBody.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-slate-400">در حال دریافت داده‌های لبه کلودفلر...</td></tr>';
+      DOM.tblLeaderboardBody.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-slate-400">در حال دریافت برترین‌های کلودفلر...</td></tr>';
 
       try {
         const query = new URLSearchParams({ mode, period, province }).toString();
@@ -1720,10 +1826,10 @@ export function renderAppHtml() {
           const list = await res.json();
           renderLeaderboardTable(list);
         } else {
-          DOM.tblLeaderboardBody.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-slate-400">خطا در دریافت جدول رده‌بندی</td></tr>';
+          DOM.tblLeaderboardBody.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-slate-400">خطا در بارگذاری جدول</td></tr>';
         }
       } catch (e) {
-        DOM.tblLeaderboardBody.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-slate-400">ارتباط با لبه برقرار نشد (حالت آفلاین)</td></tr>';
+        DOM.tblLeaderboardBody.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-slate-400">عدم برقراری ارتباط با سرور لبه (حالت آفلاین)</td></tr>';
       }
     }
 
@@ -1736,42 +1842,42 @@ export function renderAppHtml() {
       DOM.tblLeaderboardBody.innerHTML = '';
       list.forEach((item, index) => {
         const tr = document.createElement('tr');
-        tr.className = index < 3 ? 'bg-slate-900/40 hover:bg-slate-800/50 transition' : 'hover:bg-slate-900/30 transition';
+        tr.className = index < 3 ? 'bg-cyan-950/20 hover:bg-cyan-950/40 transition' : 'hover:bg-slate-900/40 transition';
         
         let rankBadge = \`#\${index + 1}\`;
         if (index === 0) rankBadge = '🥇 ۱';
         else if (index === 1) rankBadge = '🥈 ۲';
         else if (index === 2) rankBadge = '🥉 ۳';
 
-        const provName = PROVINCE_NAMES[item.province] || item.province || 'ایران';
+        const prov = PROVINCES[item.province] || item.province || 'ایران';
 
         tr.innerHTML = \`
-          <td class="p-3 text-center font-bold text-white">\${rankBadge}</td>
-          <td class="p-3 font-semibold text-slate-100 flex items-center gap-1.5">
-            <span>\${item.username || 'کاربر مهمان'}</span>
+          <td class="p-3.5 text-center font-bold text-white">\${rankBadge}</td>
+          <td class="p-3.5 font-bold text-slate-100 flex items-center gap-2">
+            <span>\${item.username || 'محاسب ناشناس'}</span>
           </td>
-          <td class="p-3 text-center text-slate-400">\${provName}</td>
-          <td class="p-3 text-center text-cyan-400 font-bold">\${item.elo_rating || 1200}</td>
-          <td class="p-3 text-center text-emerald-400 font-bold">\${item.opm.toFixed(1)}</td>
-          <td class="p-3 text-center text-slate-300">\${item.accuracy.toFixed(0)}%</td>
-          <td class="p-3 text-center text-slate-400 text-[11px]">\${item.mode}</td>
+          <td class="p-3.5 text-center text-slate-400">\${prov}</td>
+          <td class="p-3.5 text-center text-cyan-400 font-bold">\${item.elo_rating || 1200}</td>
+          <td class="p-3.5 text-center text-emerald-400 font-bold">\${item.opm.toFixed(1)}</td>
+          <td class="p-3.5 text-center text-slate-300">\${item.accuracy.toFixed(0)}%</td>
+          <td class="p-3.5 text-center text-slate-400 text-[11px]">\${item.mode}</td>
         \`;
         DOM.tblLeaderboardBody.appendChild(tr);
       });
     }
 
     async function loadUserAnalytics() {
-      DOM.analyticsContent.innerHTML = '<div class="text-center py-10 text-slate-400">در حال تحلیل رکوردها...</div>';
+      DOM.analyticsContent.innerHTML = '<div class="text-center py-10 text-slate-400">در حال تحلیل تله‌متری...</div>';
       try {
         const res = await fetch(\`/api/user/analytics?user_id=\${STATE.user.id}\`);
         if (res.ok) {
           const data = await res.json();
           renderAnalyticsScreen(data);
         } else {
-          DOM.analyticsContent.innerHTML = '<div class="text-center py-10 text-slate-400">رکوردی برای این کاربر یافت نشد. ابتدا یک بازی انجام دهید!</div>';
+          DOM.analyticsContent.innerHTML = '<div class="text-center py-10 text-slate-400">ابتدا چند مسابقه را به پایان برسانید تا پرونده شما تشکیل شود!</div>';
         }
       } catch (e) {
-        DOM.analyticsContent.innerHTML = '<div class="text-center py-10 text-slate-400">خطا در برقراری ارتباط با سرور</div>';
+        DOM.analyticsContent.innerHTML = '<div class="text-center py-10 text-slate-400">خطا در دریافت پرونده آنالیز</div>';
       }
     }
 
@@ -1783,34 +1889,34 @@ export function renderAppHtml() {
 
       let html = \`
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-center">
-            <div class="text-xs text-slate-400">تعداد مسابقات بررسی‌شده</div>
-            <div class="num-font text-2xl font-black text-cyan-400 mt-1">\${data.recentRunsCount}</div>
+          <div class="p-5 rounded-2xl bg-slate-950/80 border border-white/[0.06] text-center">
+            <div class="text-xs text-slate-400">تعداد مسابقات آنالیز شده</div>
+            <div class="num-font text-3xl font-black text-cyan-400 mt-1">\${data.recentRunsCount}</div>
           </div>
-          <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-center">
-            <div class="text-xs text-slate-400">کل مسائل حل‌شده</div>
-            <div class="num-font text-2xl font-black text-emerald-400 mt-1">\${data.totalProblemsAnalyzed}</div>
+          <div class="p-5 rounded-2xl bg-slate-950/80 border border-white/[0.06] text-center">
+            <div class="text-xs text-slate-400">کل معادلات ارزیابی‌شده</div>
+            <div class="num-font text-3xl font-black text-emerald-400 mt-1">\${data.totalProblemsAnalyzed}</div>
           </div>
-          <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-center">
+          <div class="p-5 rounded-2xl bg-slate-950/80 border border-white/[0.06] text-center">
             <div class="text-xs text-slate-400">ریتینگ ELO فعلی</div>
-            <div class="num-font text-2xl font-black text-purple-400 mt-1">\${data.user?.elo_rating || STATE.user.elo}</div>
+            <div class="num-font text-3xl font-black text-violet-400 mt-1">\${data.user?.elo_rating || STATE.user.elo}</div>
           </div>
         </div>
 
         <div class="space-y-3 mt-6">
-          <h3 class="font-bold text-sm text-white">کندترین ترکیبات و نقاط ضعف پرتکرار شما در mathgame:</h3>
+          <h3 class="font-bold text-sm text-white">کندترین فکت‌ها و گلوگاه‌های محاسباتی شما:</h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
       \`;
 
       data.topWeaknesses.forEach(w => {
         html += \`
-          <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between">
+          <div class="p-4 rounded-2xl bg-slate-950/80 border border-white/[0.06] flex items-center justify-between">
             <div>
-              <div class="font-mono text-base font-bold text-white">\${w.problem}</div>
-              <div class="text-xs text-slate-400">\${w.attempts} بار تکرار - \${w.errorRate}% خطا</div>
+              <div class="num-font text-lg font-bold text-white">\${w.problem}</div>
+              <div class="text-xs text-slate-400 mt-0.5">\${w.attempts} تکرار - \${w.errorRate}% خطا</div>
             </div>
             <div class="text-right">
-              <span class="num-font text-sm font-bold text-amber-400">\${w.avgLatency}ms</span>
+              <span class="num-font text-base font-bold text-amber-400">\${w.avgLatency}ms</span>
               <div class="text-[10px] text-slate-400">میانگین زمان</div>
             </div>
           </div>
@@ -1826,9 +1932,9 @@ export function renderAppHtml() {
     }
 
     // ==========================================
-    // 8. EVENT LISTENERS & PERSIAN NUMPAD MAPPING
+    // 8. EVENT BINDINGS & KEYBOARD MAPPING
     // ==========================================
-    const DIGIT_NORMALIZER = {
+    const PERSIAN_DIGIT_MAP = {
       '۰': '0', '۱': '1', '۲': '2', '۳': '3', '۴': '4',
       '۵': '5', '۶': '6', '۷': '7', '۸': '8', '۹': '9',
       '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4',
@@ -1837,6 +1943,20 @@ export function renderAppHtml() {
     };
 
     window.addEventListener('keydown', (e) => {
+      // Space to start run from Hub
+      if (e.code === 'Space' && !DOM.viewHub.classList.contains('hidden') && DOM.modalProfile.classList.contains('hidden')) {
+        e.preventDefault();
+        startRun();
+        return;
+      }
+
+      // Space to skip problem in run
+      if (e.code === 'Space' && STATE.activeRun) {
+        e.preventDefault();
+        skipCurrentProblem();
+        return;
+      }
+
       if (e.key === 'Escape') {
         if (STATE.activeRun) {
           endRun();
@@ -1854,15 +1974,15 @@ export function renderAppHtml() {
         return;
       }
 
-      if (e.key === 'Backspace') {
+      if (e.key === 'Backspace' || e.key === 'Delete') {
         e.preventDefault();
         handleInputDigit('backspace');
         return;
       }
 
       let char = e.key;
-      if (DIGIT_NORMALIZER[char] !== undefined) {
-        char = DIGIT_NORMALIZER[char];
+      if (PERSIAN_DIGIT_MAP[char] !== undefined) {
+        char = PERSIAN_DIGIT_MAP[char];
       }
 
       if (char >= '0' && char <= '9') {
@@ -1874,56 +1994,58 @@ export function renderAppHtml() {
       }
     });
 
+    // Touch Numpad buttons click
     document.querySelectorAll('.numpad-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
         const val = btn.getAttribute('data-val');
         handleInputDigit(val);
       });
     });
 
-    DOM.modeCards.forEach(card => {
-      card.addEventListener('click', () => {
-        const mode = card.getAttribute('data-mode');
+    // Mode Tiles click
+    DOM.modeTiles.forEach(tile => {
+      tile.addEventListener('click', () => {
+        const mode = tile.getAttribute('data-mode');
         selectMode(mode);
       });
     });
 
     function selectMode(mode) {
       STATE.config.mode = mode;
-      DOM.modeCards.forEach(c => {
-        if (c.getAttribute('data-mode') === mode) {
-          c.classList.add('ring-2', 'ring-cyan-500', 'bg-slate-800/90');
+      DOM.modeTiles.forEach(t => {
+        if (t.getAttribute('data-mode') === mode) {
+          t.className = 'mode-tile cursor-pointer glass-card glass-interactive rounded-2xl p-5 flex flex-col justify-between ring-2 ring-cyan-500 bg-slate-900/90';
         } else {
-          c.classList.remove('ring-2', 'ring-cyan-500', 'bg-slate-800/90');
+          t.className = 'mode-tile cursor-pointer glass-card glass-interactive rounded-2xl p-5 flex flex-col justify-between';
         }
       });
-
       renderSubOptions(mode);
     }
 
     function renderSubOptions(mode) {
-      DOM.boxModeOptions.innerHTML = '';
+      DOM.subOptionsToolbar.innerHTML = '';
 
       if (mode === 'blitz') {
-        DOM.lblActiveModeTitle.textContent = 'حمله سرعتی (Time Attack)';
-        DOM.boxModeOptions.innerHTML = \`
-          <button class="sub-btn px-3 py-1.5 rounded-lg bg-cyan-950 border border-cyan-800 text-xs font-mono text-cyan-300 font-bold active-sub" data-sub="30">۳۰ ثانیه</button>
-          <button class="sub-btn px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-800 text-xs font-mono text-slate-300 font-bold" data-sub="60">۶۰ ثانیه</button>
-          <button class="sub-btn px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-800 text-xs font-mono text-slate-300 font-bold" data-sub="120">۱۲۰ ثانیه</button>
+        DOM.lblModeActive.textContent = 'حمله سرعتی (Time Attack)';
+        DOM.subOptionsToolbar.innerHTML = \`
+          <button class="sub-btn px-3 py-1 rounded-lg bg-cyan-950 border border-cyan-700 text-xs font-mono text-cyan-300 font-bold active" data-sub="30">۳۰s</button>
+          <button class="sub-btn px-3 py-1 rounded-lg bg-slate-900 border border-white/[0.08] text-xs font-mono text-slate-300 font-bold" data-sub="60">۶۰s</button>
+          <button class="sub-btn px-3 py-1 rounded-lg bg-slate-900 border border-white/[0.08] text-xs font-mono text-slate-300 font-bold" data-sub="120">۱۲۰s</button>
         \`;
         STATE.config.subOption = '30';
       } else if (mode === 'sprint') {
-        DOM.lblActiveModeTitle.textContent = 'دوی سرعتی (Target Sprint)';
-        DOM.boxModeOptions.innerHTML = \`
-          <button class="sub-btn px-3 py-1.5 rounded-lg bg-emerald-950 border border-emerald-800 text-xs font-mono text-emerald-300 font-bold active-sub" data-sub="20">۲۰ سوال</button>
-          <button class="sub-btn px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-800 text-xs font-mono text-slate-300 font-bold" data-sub="50">۵۰ سوال</button>
-          <button class="sub-btn px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-800 text-xs font-mono text-slate-300 font-bold" data-sub="100">۱۰۰ سوال</button>
+        DOM.lblModeActive.textContent = 'دوی هدفی (Target Sprint)';
+        DOM.subOptionsToolbar.innerHTML = \`
+          <button class="sub-btn px-3 py-1 rounded-lg bg-emerald-950 border border-emerald-700 text-xs font-mono text-emerald-300 font-bold active" data-sub="20">۲۰ سوال</button>
+          <button class="sub-btn px-3 py-1 rounded-lg bg-slate-900 border border-white/[0.08] text-xs font-mono text-slate-300 font-bold" data-sub="50">۵۰ سوال</button>
+          <button class="sub-btn px-3 py-1 rounded-lg bg-slate-900 border border-white/[0.08] text-xs font-mono text-slate-300 font-bold" data-sub="100">۱۰۰ سوال</button>
         \`;
         STATE.config.subOption = '20';
       } else if (mode === 'dojo') {
-        DOM.lblActiveModeTitle.textContent = 'ضرب‌خانه تخصصی (Multiplication Dojo)';
-        DOM.boxModeOptions.innerHTML = \`
-          <select id="selDojoTier" class="bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-amber-300 font-bold">
+        DOM.lblModeActive.textContent = 'ضرب‌خانه تخصصی (Multiplication Dojo)';
+        DOM.subOptionsToolbar.innerHTML = \`
+          <select id="selDojoTier" class="bg-slate-950 border border-white/[0.1] rounded-lg px-2.5 py-1 text-xs text-amber-300 font-bold">
             <option value="1">سطح ۱: جدول تک‌رقمی (۱×۱ تا ۹×۹)</option>
             <option value="2">سطح ۲: اعداد ۱۱ تا ۱۹ و مربع‌ها</option>
             <option value="3">سطح ۳: جام جهانی (۲رقمی در ۲رقمی)</option>
@@ -1938,24 +2060,25 @@ export function renderAppHtml() {
           STATE.config.subOption = 'tier' + e.target.value;
         });
       } else if (mode === 'survival') {
-        DOM.lblActiveModeTitle.textContent = 'چالش بقا (Sudden Death)';
-        DOM.boxModeOptions.innerHTML = \`
-          <span class="text-xs text-rose-400 font-mono font-bold">شروع: ۵ ثانیه | خطا = باخت</span>
+        DOM.lblModeActive.textContent = 'مرگ ناگهانی (Sudden Death)';
+        DOM.subOptionsToolbar.innerHTML = \`
+          <span class="text-xs text-rose-400 font-mono font-bold">شروع: ۵ ثانیه | ۱ خطا = باخت</span>
         \`;
         STATE.config.subOption = 'survival';
       }
 
-      DOM.boxModeOptions.querySelectorAll('.sub-btn').forEach(btn => {
+      DOM.subOptionsToolbar.querySelectorAll('.sub-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-          DOM.boxModeOptions.querySelectorAll('.sub-btn').forEach(b => {
-            b.className = 'sub-btn px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-800 text-xs font-mono text-slate-300 font-bold';
+          DOM.subOptionsToolbar.querySelectorAll('.sub-btn').forEach(b => {
+            b.className = 'sub-btn px-3 py-1 rounded-lg bg-slate-900 border border-white/[0.08] text-xs font-mono text-slate-300 font-bold';
           });
-          btn.className = 'sub-btn px-3 py-1.5 rounded-lg bg-cyan-950 border border-cyan-800 text-xs font-mono text-cyan-300 font-bold';
+          btn.className = 'sub-btn px-3 py-1 rounded-lg bg-cyan-950 border border-cyan-700 text-xs font-mono text-cyan-300 font-bold active';
           STATE.config.subOption = btn.getAttribute('data-sub');
         });
       });
     }
 
+    // Operator Checkboxes
     DOM.chkOpAdd.addEventListener('change', (e) => STATE.config.operators.add = e.target.checked);
     DOM.chkOpSub.addEventListener('change', (e) => STATE.config.operators.sub = e.target.checked);
     DOM.chkOpMul.addEventListener('change', (e) => STATE.config.operators.mul = e.target.checked);
@@ -1963,19 +2086,39 @@ export function renderAppHtml() {
     DOM.chkOpMod.addEventListener('change', (e) => STATE.config.operators.mod = e.target.checked);
     DOM.chkOpPow.addEventListener('change', (e) => STATE.config.operators.pow = e.target.checked);
 
+    // Operator Presets
+    DOM.btnPresetAll.addEventListener('click', () => {
+      setOpCheckboxes(true, true, true, true, true, true);
+    });
+    DOM.btnPresetMulOnly.addEventListener('click', () => {
+      setOpCheckboxes(false, false, true, false, false, false);
+    });
+    DOM.btnPresetAddSub.addEventListener('click', () => {
+      setOpCheckboxes(true, true, false, false, false, false);
+    });
+
+    function setOpCheckboxes(add, sub, mul, div, mod, pow) {
+      DOM.chkOpAdd.checked = add; STATE.config.operators.add = add;
+      DOM.chkOpSub.checked = sub; STATE.config.operators.sub = sub;
+      DOM.chkOpMul.checked = mul; STATE.config.operators.mul = mul;
+      DOM.chkOpDiv.checked = div; STATE.config.operators.div = div;
+      DOM.chkOpMod.checked = mod; STATE.config.operators.mod = mod;
+      DOM.chkOpPow.checked = pow; STATE.config.operators.pow = pow;
+    }
+
     DOM.toggleZenMode.addEventListener('change', (e) => {
       STATE.settings.zenMode = e.target.checked;
-      saveLocalState();
+      saveLocal();
     });
     DOM.toggleEnterMode.addEventListener('change', (e) => {
       STATE.settings.enterMode = e.target.checked;
-      saveLocalState();
+      saveLocal();
     });
 
     DOM.btnAudioToggle.addEventListener('click', () => {
       STATE.settings.audio = !STATE.settings.audio;
       DOM.iconAudio.textContent = STATE.settings.audio ? '🔊' : '🔇';
-      saveLocalState();
+      saveLocal();
     });
 
     DOM.btnLangToggle.addEventListener('click', () => {
@@ -1984,28 +2127,28 @@ export function renderAppHtml() {
         document.documentElement.lang = 'en';
         document.documentElement.dir = 'ltr';
         DOM.btnLangToggle.textContent = 'FA';
-        DOM.txtSubTitle.textContent = 'Ultra-low Latency Mental Math Speedrunning';
+        DOM.txtHeaderSubtitle.textContent = 'Ultra-low Latency Mental Math Speedrunning';
       } else {
         document.documentElement.lang = 'fa';
         document.documentElement.dir = 'rtl';
         DOM.btnLangToggle.textContent = 'EN';
-        DOM.txtSubTitle.textContent = 'لیگ محاسبات ذهنی سریع ایران';
+        DOM.txtHeaderSubtitle.textContent = 'لیگ محاسبات ذهنی سریع ایران';
       }
     });
 
-    DOM.btnOpenProfile.addEventListener('click', () => {
-      updateProfileHud();
-      DOM.modalProfile.classList.remove('hidden');
-    });
+    // Profile Modal
+    DOM.btnOpenProfile.addEventListener('click', () => DOM.modalProfile.classList.remove('hidden'));
+    DOM.btnEditProfilePencil.addEventListener('click', () => DOM.modalProfile.classList.remove('hidden'));
     DOM.btnCloseProfileModal.addEventListener('click', () => DOM.modalProfile.classList.add('hidden'));
+
     DOM.btnSaveProfile.addEventListener('click', async () => {
-      const newName = DOM.iptUsername.value.trim();
-      const prov = DOM.selProfileProvince.value;
-      if (newName) {
-        STATE.user.username = newName;
-        STATE.user.province = prov;
-        saveLocalState();
-        updateProfileHud();
+      const n = DOM.iptUsername.value.trim();
+      const p = DOM.selProfileProvince.value;
+      if (n) {
+        STATE.user.username = n;
+        STATE.user.province = p;
+        saveLocal();
+        updateProfileCard();
 
         try {
           await fetch('/api/user/profile', {
@@ -2019,15 +2162,16 @@ export function renderAppHtml() {
       }
     });
 
-    DOM.btnQuickStart.addEventListener('click', () => startRun());
-    DOM.btnPlayAgain.addEventListener('click', () => startRun());
-    DOM.btnReturnHub.addEventListener('click', () => showScreen('hub'));
-    DOM.btnAbortRun.addEventListener('click', () => {
-      if (animFrameId) cancelAnimationFrame(animFrameId);
-      STATE.activeRun = null;
-      showScreen('hub');
+    // Start Actions
+    DOM.btnHeroStart.addEventListener('click', () => startRun());
+    DOM.btnHeroWeakness.addEventListener('click', () => {
+      if (STATE.customWeaknessProblems && STATE.customWeaknessProblems.length > 0) {
+        startRun(STATE.customWeaknessProblems);
+      } else {
+        startRun();
+      }
     });
-
+    DOM.btnPlayAgain.addEventListener('click', () => startRun());
     DOM.btnTrainWeaknessNow.addEventListener('click', () => {
       if (STATE.customWeaknessProblems && STATE.customWeaknessProblems.length > 0) {
         startRun(STATE.customWeaknessProblems);
@@ -2035,14 +2179,25 @@ export function renderAppHtml() {
         startRun();
       }
     });
-    DOM.btnTrainWeaknessHub.addEventListener('click', () => {
-      if (STATE.customWeaknessProblems && STATE.customWeaknessProblems.length > 0) {
-        startRun(STATE.customWeaknessProblems);
-      } else {
-        startRun();
+    DOM.btnReturnHub.addEventListener('click', () => showScreen('hub'));
+    DOM.btnAbortRun.addEventListener('click', () => {
+      if (animFrameId) cancelAnimationFrame(animFrameId);
+      STATE.activeRun = null;
+      showScreen('hub');
+    });
+    DOM.btnSkipProblem.addEventListener('click', () => skipCurrentProblem());
+
+    // Share summary
+    DOM.btnShareSummary.addEventListener('click', () => {
+      const text = \`⚡ رکورد جدید من در mathgame:\\n🔥 سرعت: \${DOM.sumOpm.textContent} OPM\\n🎯 دقت: \${DOM.sumAccuracy.textContent}\\n💎 ریتینگ ELO: \${STATE.user.elo}\\n🇮🇷 رده‌بندی استان \${PROVINCES[STATE.user.province] || 'ایران'}\`;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text);
+        DOM.btnShareSummary.textContent = '✅ کپی شد!';
+        setTimeout(() => DOM.btnShareSummary.textContent = '📋 اشتراک‌گذاری رکورد', 2000);
       }
     });
 
+    // Nav
     DOM.btnNavHome.addEventListener('click', () => showScreen('hub'));
     DOM.btnNavLeaderboard.addEventListener('click', () => {
       showScreen('leaderboard');
@@ -2060,32 +2215,33 @@ export function renderAppHtml() {
     DOM.btnBackFromAnalytics.addEventListener('click', () => showScreen('hub'));
 
     window.addEventListener('online', () => {
-      DOM.txtEdgeStatus.textContent = 'لبه کلودفلر (Online)';
-      DOM.badgeNetwork.className = 'flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs text-emerald-400 font-mono';
+      DOM.txtEdgePoP.textContent = 'لبه کلودفلر (Online)';
+      DOM.badgeEdgeStatus.className = 'flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 border border-white/[0.08] text-emerald-400';
       syncOfflineQueue();
     });
     window.addEventListener('offline', () => {
-      DOM.txtEdgeStatus.textContent = 'حافظه آفلاین (Offline)';
-      DOM.badgeNetwork.className = 'flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs text-amber-400 font-mono';
+      DOM.txtEdgePoP.textContent = 'حافظه آفلاین (Offline)';
+      DOM.badgeEdgeStatus.className = 'flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900/80 border border-white/[0.08] text-amber-400';
     });
 
-    async function checkEdgeHealth() {
+    async function checkEdgePoP() {
       try {
         const res = await fetch('/api/health');
         if (res.ok) {
           const info = await res.json();
           if (info.colo) {
-            DOM.txtEdgeStatus.textContent = \`لبه \${info.colo} (\${info.durationMs || 1}ms)\`;
+            DOM.txtEdgePoP.textContent = \`لبه \${info.colo}\`;
           }
         }
       } catch (e) {}
     }
 
-    loadLocalState();
-    updateProfileHud();
+    // Init
+    loadLocal();
+    updateProfileCard();
     selectMode('blitz');
     updateSyncQueueStatus();
-    checkEdgeHealth();
+    checkEdgePoP();
 
     if (navigator.onLine) {
       syncOfflineQueue();
