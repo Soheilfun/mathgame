@@ -5,6 +5,6 @@ compatibility_flags = ["nodejs_compat"]
 
 [[d1_databases]]
 binding = "DB"
-database_name = "zehnbarter_db"
-database_id = "00000000-0000-0000-0000-000000000000"
+database_name = "mathgame"
+database_id = "96c66abc-1aba-4250-97b1-f18220209b47"
 migrations_dir = "./migrations"
