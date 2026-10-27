@@ -22,6 +22,9 @@ export default {
     const url = new URL(request.url);
     const method = request.method;
 
+    // Database instance supports both env.DB and env.mathgame bindings
+    const db = env.DB || env.mathgame;
+
     // Set CORS headers for edge API compatibility
     const corsHeaders = {
       'Access-Control-Allow-Origin': '*',
@@ -59,10 +62,9 @@ export default {
       }
 
       // Ensure D1 is initialized (if D1 binding is present)
-      if (env.DB) {
-        // Execute lazily / cached
+      if (db) {
         try {
-          await initDb(env.DB);
+          await initDb(db);
         } catch (dbInitErr) {
           console.warn('DB init note:', dbInitErr.message);
         }
@@ -77,8 +79,8 @@ export default {
             return jsonResponse({ error: 'Missing id or username' }, corsHeaders, 400);
           }
 
-          if (env.DB) {
-            const user = await upsertUser(env.DB, { id, username, province });
+          if (db) {
+            const user = await upsertUser(db, { id, username, province });
             return jsonResponse({ success: true, user }, corsHeaders);
           } else {
             return jsonResponse({ success: true, user: { id, username, province, elo_rating: 1200 } }, corsHeaders);
@@ -93,8 +95,8 @@ export default {
           return jsonResponse({ error: 'Missing user_id parameter' }, corsHeaders, 400);
         }
 
-        if (env.DB) {
-          const user = await getUser(env.DB, userId);
+        if (db) {
+          const user = await getUser(db, userId);
           return jsonResponse({ user: user || { id: userId, username: 'Anonymous', elo_rating: 1200 } }, corsHeaders);
         } else {
           return jsonResponse({ user: { id: userId, username: 'Anonymous', elo_rating: 1200 } }, corsHeaders);
@@ -116,14 +118,14 @@ export default {
 
         const runId = payload.id || 'run_' + crypto.randomUUID();
         const userId = payload.userId || 'usr_guest';
-        const username = payload.username || 'محاسب_ناشناس';
+        const username = payload.username || 'کاربر_ناشناس';
         const province = payload.province || 'tehran';
 
         let currentElo = 1200;
-        if (env.DB) {
-          let user = await getUser(env.DB, userId);
+        if (db) {
+          let user = await getUser(db, userId);
           if (!user) {
-            user = await upsertUser(env.DB, { id: userId, username, province, elo_rating: 1200 });
+            user = await upsertUser(db, { id: userId, username, province, elo_rating: 1200 });
           }
           currentElo = user ? user.elo_rating : 1200;
         }
@@ -132,8 +134,8 @@ export default {
         const eloCalc = calculateNewElo(currentElo, payload);
 
         // Persist to Cloudflare D1
-        if (env.DB) {
-          await insertRun(env.DB, {
+        if (db) {
+          await insertRun(db, {
             id: runId,
             userId,
             mode: payload.mode || 'blitz_30',
@@ -145,7 +147,7 @@ export default {
             details: payload.details || []
           });
 
-          await updateUserElo(env.DB, userId, eloCalc.newElo);
+          await updateUserElo(db, userId, eloCalc.newElo);
         }
 
         return jsonResponse({
@@ -170,8 +172,8 @@ export default {
         // Filter valid runs using anti-cheat
         const validRuns = runs.filter(r => verifyRunTelemetry(r).valid);
 
-        if (env.DB && validRuns.length > 0) {
-          await syncBatchRuns(env.DB, validRuns);
+        if (db && validRuns.length > 0) {
+          await syncBatchRuns(db, validRuns);
         }
 
         return jsonResponse({
@@ -189,8 +191,8 @@ export default {
 
         let leaderboard = [];
 
-        if (env.DB) {
-          leaderboard = await getLeaderboard(env.DB, { mode, period, province, limit: 50 });
+        if (db) {
+          leaderboard = await getLeaderboard(db, { mode, period, province, limit: 50 });
         } else {
           // Mock data for preview when DB is not yet populated
           leaderboard = [
@@ -215,8 +217,8 @@ export default {
           return jsonResponse({ error: 'Missing user_id parameter' }, corsHeaders, 400);
         }
 
-        if (env.DB) {
-          const analytics = await getUserAnalytics(env.DB, userId);
+        if (db) {
+          const analytics = await getUserAnalytics(db, userId);
           return jsonResponse(analytics || { topWeaknesses: [], latencyHistogram: {} }, corsHeaders);
         } else {
           return jsonResponse({
