@@ -1,6 +1,6 @@
 /**
- * Comprehensive Local Simulation & Test Suite
- * Tests Anti-Cheat, Elo System, and Worker API Endpoints
+ * Comprehensive Local Simulation & Test Suite for mathgame
+ * Tests Anti-Cheat, Elo System, Auth, Daily Challenge, and Worker API Endpoints
  */
 
 import { verifyRunTelemetry } from '../src/anti-cheat.js';
@@ -24,7 +24,6 @@ console.log('============================================');
 console.log('🔬 1. TESTING ANTI-CHEAT VALIDATION ENGINE');
 console.log('============================================');
 
-// Test 1.1: Legitimate human run
 const legitRun = {
   durationMs: 30000,
   totalAnswered: 25,
@@ -41,17 +40,16 @@ const legitRun = {
     answer: 42,
     userAnswer: 42,
     correct: true,
-    latencyMs: 1000 + Math.floor(Math.random() * 400) - 200 // normal variance
+    latencyMs: 1000 + Math.floor(Math.random() * 400) - 200
   }))
 };
 
 const legitCheck = verifyRunTelemetry(legitRun);
 assert(legitCheck.valid === true, 'Legitimate human run passes anti-cheat');
 
-// Test 1.2: Superhuman / Bot Reaction Speed (< 110ms avg)
 const botSpeedRun = {
   durationMs: 1500,
-  totalAnswered: 30, // 50ms per question!
+  totalAnswered: 30,
   correctCount: 30,
   wrongCount: 0,
   opm: 1200,
@@ -61,7 +59,6 @@ const botSpeedRun = {
 const botSpeedCheck = verifyRunTelemetry(botSpeedRun);
 assert(botSpeedCheck.valid === false, 'Superhuman latency (<110ms) is rejected');
 
-// Test 1.3: Math Tampering (claimed wrong answer is correct)
 const tamperedRun = {
   durationMs: 30000,
   totalAnswered: 10,
@@ -70,13 +67,12 @@ const tamperedRun = {
   opm: 20,
   accuracy: 100,
   details: [
-    { a: 7, b: 8, op: '×', answer: 999, latencyMs: 800 } // 7x8 != 999!
+    { a: 7, b: 8, op: '×', answer: 999, latencyMs: 800 }
   ]
 };
 const tamperedCheck = verifyRunTelemetry(tamperedRun);
 assert(tamperedCheck.valid === false, 'Math result tampering is rejected');
 
-// Test 1.4: Zero Variance Bot Detection (Fixed macro sleep)
 const macroRun = {
   durationMs: 10000,
   totalAnswered: 20,
@@ -90,7 +86,7 @@ const macroRun = {
     b: 3,
     op: '+',
     answer: 5,
-    latencyMs: 500 // exactly 500ms every single time!
+    latencyMs: 500
   }))
 };
 const macroCheck = verifyRunTelemetry(macroRun);
@@ -100,11 +96,9 @@ console.log('\n============================================');
 console.log('⚡ 2. TESTING DYNAMIC ELO RATING SYSTEM');
 console.log('============================================');
 
-// Test 2.1: Default Rank Info
 const startRank = getRankInfo(1200);
 assert(startRank.titleFa === 'کارآموز', 'Elo 1200 corresponds to Apprentice / کارآموز');
 
-// Test 2.2: Good performance increases Elo
 const highPerfRun = {
   opm: 65,
   accuracy: 98,
@@ -115,7 +109,6 @@ const eloGain = calculateNewElo(1200, highPerfRun);
 assert(eloGain.delta > 0, `High performance yielded positive Elo delta (+${eloGain.delta})`);
 assert(eloGain.newElo > 1200, `New Elo (${eloGain.newElo}) > Old Elo (1200)`);
 
-// Test 2.3: Poor accuracy decreases Elo
 const poorPerfRun = {
   opm: 20,
   accuracy: 60,
@@ -164,6 +157,37 @@ async function testWorkerRoutes() {
   const lbData = await resLb.json();
   assert(resLb.status === 200, 'GET /api/leaderboard returns HTTP 200');
   assert(Array.isArray(lbData) && lbData.length > 0, 'GET /api/leaderboard returns array of players');
+
+  // Test 3.5: Daily Challenge API
+  const reqDaily = new Request('http://localhost/api/daily/today', { method: 'GET' });
+  const resDaily = await worker.fetch(reqDaily, mockEnv, {});
+  const dailyData = await resDaily.json();
+  assert(resDaily.status === 200, 'GET /api/daily/today returns HTTP 200');
+  assert(dailyData.success === true, 'GET /api/daily/today reports success: true');
+  assert(dailyData.challenge?.questions?.length === 25, 'Daily challenge returns exactly 25 deterministic questions');
+
+  // Test 3.6: User Auth (Register)
+  const reqReg = new Request('http://localhost/api/auth/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: 'ali_math', password: 'secret123Password', province: 'isfahan' })
+  });
+  const resReg = await worker.fetch(reqReg, mockEnv, {});
+  const regData = await resReg.json();
+  assert(resReg.status === 200, 'POST /api/auth/register returns HTTP 200');
+  assert(regData.success === true, 'Registration succeeded');
+  assert(regData.user?.username === 'ali_math', 'Registered user matches username');
+
+  // Test 3.7: User Auth (Login)
+  const reqLogin = new Request('http://localhost/api/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: 'ali_math', password: 'secret123Password' })
+  });
+  const resLogin = await worker.fetch(reqLogin, mockEnv, {});
+  const loginData = await resLogin.json();
+  assert(resLogin.status === 200, 'POST /api/auth/login returns HTTP 200');
+  assert(loginData.success === true, 'Login succeeded');
 
   console.log('\n============================================');
   console.log(`📊 TEST RESULTS: ${passed} PASSED, ${failed} FAILED`);
