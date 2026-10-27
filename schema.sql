@@ -1,5 +1,5 @@
--- Cloudflare D1 Database Schema for ZehnBarter (MathArcade IR)
--- Persian Competitive Mental Math Speedrunning Platform
+-- Cloudflare D1 Database Schema for mathgame
+-- Competitive Mental Math Speedrunning Platform (Iran / Regional)
 
 CREATE TABLE IF NOT EXISTS users (
   id TEXT PRIMARY KEY,

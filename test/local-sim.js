@@ -137,7 +137,7 @@ async function testWorkerRoutes() {
   const resHome = await worker.fetch(reqHome, mockEnv, {});
   const html = await resHome.text();
   assert(resHome.status === 200, 'GET / returns HTTP 200');
-  assert(html.includes('ذهن‌برتر'), 'GET / HTML contains Persian title "ذهن‌برتر"');
+  assert(html.includes('mathgame'), 'GET / HTML contains title "mathgame"');
   assert(html.includes('Vazirmatn'), 'GET / HTML contains Vazirmatn font');
 
   // Test 3.2: Health Check

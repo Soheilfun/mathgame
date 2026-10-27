@@ -1,6 +1,6 @@
 /**
  * Dynamic Elo Rating System for Competitive Mental Math Speedrunning
- * Tailored for ZehnBarter (MathArcade IR)
+ * Tailored for mathgame
  */
 
 export const RANKS = [

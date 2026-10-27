@@ -1,5 +1,5 @@
 /**
- * Cloudflare D1 Database Layer for ZehnBarter
+ * Cloudflare D1 Database Layer for mathgame
  */
 
 export async function initDb(db) {

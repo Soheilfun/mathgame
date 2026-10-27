@@ -1,5 +1,5 @@
 /**
- * ZehnBarter (MathArcade IR) - Cloudflare Workers Edge Backend
+ * mathgame - Cloudflare Workers Edge Backend
  * Ultra-Low Latency Mental Math Speedrunning & Real-time Leaderboards
  */
 

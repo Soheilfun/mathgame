@@ -1,6 +1,6 @@
 /**
- * ZehnBarter (MathArcade IR) - Self-contained Ultra-Low Latency SPA
- * Persian & English Competitive Mental Math Speedrunning Platform
+ * mathgame - Self-contained Ultra-Low Latency SPA
+ * Competitive Mental Math Speedrunning Platform (Iran / Regional)
  */
 
 export function renderAppHtml() {
@@ -9,7 +9,7 @@ export function renderAppHtml() {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>ذهن‌برتر | ZehnBarter - لیگ محاسبات ذهنی سریع ایران</title>
+  <title>mathgame | لیگ محاسبات ذهنی سریع ایران</title>
   
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -127,8 +127,8 @@ export function renderAppHtml() {
           </div>
           <div>
             <div class="flex items-center gap-1.5">
-              <span class="font-black text-lg tracking-tight bg-gradient-to-r from-cyan-400 via-emerald-300 to-slate-100 bg-clip-text text-transparent">
-                ذهن‌برتر
+              <span class="font-black text-xl tracking-tight bg-gradient-to-r from-cyan-400 via-emerald-300 to-slate-100 bg-clip-text text-transparent font-mono">
+                mathgame
               </span>
               <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-cyan-950 border border-cyan-800 text-cyan-400 uppercase tracking-widest">
                 PRO
@@ -196,10 +196,10 @@ export function renderAppHtml() {
         <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div class="space-y-2">
             <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-cyan-950/80 border border-cyan-800/60 text-cyan-300 text-xs font-medium">
-              <span>🇮🇷 لیگ آنلاین سرعت ذهن و تمرکز</span>
+              <span>🇮🇷 mathgame - لیگ آنلاین سرعت ذهن و تمرکز</span>
             </div>
             <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight">
-              سرعتت رو به رخ بکش، <span class="bg-gradient-to-l from-emerald-400 to-cyan-400 bg-clip-text text-transparent">ذهن برتر شو!</span>
+              سرعتت رو به رخ بکش، <span class="bg-gradient-to-l from-emerald-400 to-cyan-400 bg-clip-text text-transparent">قهرمان mathgame شو!</span>
             </h1>
             <p class="text-slate-400 text-sm max-w-xl leading-relaxed">
               محاسبات ریاضی با نهایت سرعت در لبه شبکه کلودفلر، بدون افت فریم (۱۴۴ هرتز) و ورودی بدون اینتر (Zen Numpad).
@@ -591,7 +591,7 @@ export function renderAppHtml() {
         <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-5">
           <div>
             <h2 class="text-2xl sm:text-3xl font-black text-white flex items-center gap-2">
-              <span>🏆 جدول برترین محاسبان ایران</span>
+              <span>🏆 جدول برترین محاسبان mathgame</span>
             </h2>
             <p class="text-xs text-slate-400 mt-1">رده‌بندی کشوری و استانی بر اساس بیشترین OPM و ریتینگ Elo</p>
           </div>
@@ -681,7 +681,7 @@ export function renderAppHtml() {
       <div class="rounded-3xl bg-slate-900/90 border border-slate-800 p-6 sm:p-8 backdrop-blur-md shadow-2xl">
         <div class="flex items-center justify-between border-b border-slate-800 pb-5">
           <div>
-            <h2 class="text-2xl font-black text-white">📊 پرونده جامع آنالیز و نقاط ضعف</h2>
+            <h2 class="text-2xl font-black text-white">📊 پرونده جامع آنالیز و نقاط ضعف mathgame</h2>
             <p class="text-xs text-slate-400 mt-1">بررسی الگوهای ذهنی، کندی فکت‌های محاسباتی و سیر پیشرفت ریتینگ</p>
           </div>
           <button id="btnBackFromAnalytics" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 transition cursor-pointer">
@@ -690,7 +690,6 @@ export function renderAppHtml() {
         </div>
 
         <div id="analyticsContent" class="space-y-6 my-6">
-          <!-- Populated dynamically via /api/users/:id/analytics -->
           <div class="text-center py-10 text-slate-400 text-sm">در حال دریافت داده‌های لبه...</div>
         </div>
       </div>
@@ -814,10 +813,10 @@ export function renderAppHtml() {
       customWeaknessProblems: null
     };
 
-    // Load LocalStorage cache
+    // Load LocalStorage cache with mathgame prefix
     function loadLocalState() {
       try {
-        const storedUser = localStorage.getItem('zb_user');
+        const storedUser = localStorage.getItem('mathgame_user');
         if (storedUser) {
           STATE.user = JSON.parse(storedUser);
         } else {
@@ -826,19 +825,19 @@ export function renderAppHtml() {
           const randomNum = Math.floor(100 + Math.random() * 900);
           STATE.user = {
             id: randomId,
-            username: 'محاسب_' + randomNum,
+            username: 'کاربر_' + randomNum,
             province: 'tehran',
             elo: 1200
           };
           saveLocalState();
         }
 
-        const storedSettings = localStorage.getItem('zb_settings');
+        const storedSettings = localStorage.getItem('mathgame_settings');
         if (storedSettings) {
           Object.assign(STATE.settings, JSON.parse(storedSettings));
         }
 
-        const storedPb = localStorage.getItem('zb_pb');
+        const storedPb = localStorage.getItem('mathgame_pb');
         if (storedPb) {
           Object.assign(STATE.pb, JSON.parse(storedPb));
         }
@@ -849,9 +848,9 @@ export function renderAppHtml() {
 
     function saveLocalState() {
       try {
-        localStorage.setItem('zb_user', JSON.stringify(STATE.user));
-        localStorage.setItem('zb_settings', JSON.stringify(STATE.settings));
-        localStorage.setItem('zb_pb', JSON.stringify(STATE.pb));
+        localStorage.setItem('mathgame_user', JSON.stringify(STATE.user));
+        localStorage.setItem('mathgame_settings', JSON.stringify(STATE.settings));
+        localStorage.setItem('mathgame_pb', JSON.stringify(STATE.pb));
       } catch (e) {
         console.warn('LocalStorage write failed:', e);
       }
@@ -902,16 +901,13 @@ export function renderAppHtml() {
         const popGain = ctx.createGain();
         pop.type = 'sine';
         pop.frequency.setValueAtTime(450, now);
-        pop.frequency.exponentialRampToValueAtTime(120, now + 0.015);
         popGain.gain.setValueAtTime(0.2, now);
         popGain.gain.exponentialRampToValueAtTime(0.001, now + 0.018);
         pop.connect(popGain);
         popGain.connect(ctx.destination);
         pop.start(now);
         pop.stop(now + 0.02);
-      } catch (e) {
-        // audio fail silent
-      }
+      } catch (e) {}
     }
 
     // Low error buzz
@@ -968,7 +964,6 @@ export function renderAppHtml() {
     }
 
     function generateProblem(config, customWeaknessList) {
-      // If practicing weaknesses, pick one from queue
       if (customWeaknessList && customWeaknessList.length > 0) {
         const picked = customWeaknessList[Math.floor(Math.random() * customWeaknessList.length)];
         return {
@@ -986,21 +981,21 @@ export function renderAppHtml() {
       if (config.mode === 'dojo') {
         const tier = config.dojoTier || 1;
         let a, b;
-        if (tier === 1) { // 1x1 to 9x9
+        if (tier === 1) {
           a = getRandomInt(2, 9);
           b = getRandomInt(2, 9);
-        } else if (tier === 2) { // Teens 11x11 to 19x19 or squares
+        } else if (tier === 2) {
           if (Math.random() > 0.4) {
             a = getRandomInt(11, 19);
             b = getRandomInt(11, 19);
           } else {
             a = getRandomInt(11, 30);
-            b = a; // square
+            b = a;
           }
-        } else if (tier === 3) { // 2-digit x 2-digit Mental Math World Cup
+        } else if (tier === 3) {
           a = getRandomInt(11, 99);
           b = getRandomInt(11, 99);
-        } else { // Custom bounds
+        } else {
           const bounds = config.dojoBounds || { minA: 2, maxA: 15, minB: 2, maxB: 15 };
           a = getRandomInt(bounds.minA, bounds.maxA);
           b = getRandomInt(bounds.minB, bounds.maxB);
@@ -1018,7 +1013,7 @@ export function renderAppHtml() {
         };
       }
 
-      // Standard Matrix Modes (Blitz, Sprint, Survival)
+      // Standard Matrix Modes
       const ops = [];
       if (config.operators.add) ops.push('+');
       if (config.operators.sub) ops.push('-');
@@ -1027,7 +1022,7 @@ export function renderAppHtml() {
       if (config.operators.mod) ops.push('%');
       if (config.operators.pow) ops.push('^2');
 
-      if (ops.length === 0) ops.push('+'); // fallback
+      if (ops.length === 0) ops.push('+');
       const op = ops[Math.floor(Math.random() * ops.length)];
 
       let a = 0, b = 0, answer = 0, expression = '', category = 'ARITHMETIC';
@@ -1035,13 +1030,13 @@ export function renderAppHtml() {
       switch (op) {
         case '+': {
           const type = Math.random();
-          if (type < 0.4) { // 1-digit + 1-digit
+          if (type < 0.4) {
             a = getRandomInt(2, 9);
             b = getRandomInt(2, 9);
-          } else if (type < 0.8) { // 2-digit + 1 or 2 digit
+          } else if (type < 0.8) {
             a = getRandomInt(12, 89);
             b = getRandomInt(5, 45);
-          } else { // 2-digit + 2-digit
+          } else {
             a = getRandomInt(25, 95);
             b = getRandomInt(18, 98);
           }
@@ -1122,7 +1117,6 @@ export function renderAppHtml() {
     // 4. ZERO-ALLOCATION DOM & ACTIVE RUN LOOP
     // ==========================================
     const DOM = {
-      // Screens
       viewHub: document.getElementById('viewHub'),
       viewRun: document.getElementById('viewRun'),
       viewSummary: document.getElementById('viewSummary'),
@@ -1130,7 +1124,6 @@ export function renderAppHtml() {
       viewAnalytics: document.getElementById('viewAnalytics'),
       modalProfile: document.getElementById('modalProfile'),
 
-      // Top Nav
       btnNavHome: document.getElementById('btnNavHome'),
       navUserName: document.getElementById('navUserName'),
       navUserElo: document.getElementById('navUserElo'),
@@ -1146,7 +1139,6 @@ export function renderAppHtml() {
       badgeSyncQueue: document.getElementById('badgeSyncQueue'),
       txtSyncCount: document.getElementById('txtSyncCount'),
 
-      // Hub Buttons & Selectors
       btnQuickStart: document.getElementById('btnQuickStart'),
       btnTrainWeaknessHub: document.getElementById('btnTrainWeaknessHub'),
       modeCards: document.querySelectorAll('.mode-card'),
@@ -1161,7 +1153,6 @@ export function renderAppHtml() {
       chkOpMod: document.getElementById('chkOpMod'),
       chkOpPow: document.getElementById('chkOpPow'),
 
-      // Active Run HUD
       hudTimer: document.getElementById('hudTimer'),
       hudOpm: document.getElementById('hudOpm'),
       hudStreak: document.getElementById('hudStreak'),
@@ -1172,7 +1163,6 @@ export function renderAppHtml() {
       txtGhostDelta: document.getElementById('txtGhostDelta'),
       barGhostFill: document.getElementById('barGhostFill'),
 
-      // Problem Canvas
       problemContainer: document.getElementById('problemContainer'),
       txtProblemExpression: document.getElementById('txtProblemExpression'),
       txtUserInputEcho: document.getElementById('txtUserInputEcho'),
@@ -1180,7 +1170,6 @@ export function renderAppHtml() {
       lblOpCategory: document.getElementById('lblOpCategory'),
       btnAbortRun: document.getElementById('btnAbortRun'),
 
-      // Summary Screen
       sumTitle: document.getElementById('sumTitle'),
       sumEloChange: document.getElementById('sumEloChange'),
       sumRankBadge: document.getElementById('sumRankBadge'),
@@ -1194,18 +1183,15 @@ export function renderAppHtml() {
       btnTrainWeaknessNow: document.getElementById('btnTrainWeaknessNow'),
       btnReturnHub: document.getElementById('btnReturnHub'),
 
-      // Leaderboard Screen
       selLbMode: document.getElementById('selLbMode'),
       selLbPeriod: document.getElementById('selLbPeriod'),
       selLbProvince: document.getElementById('selLbProvince'),
       tblLeaderboardBody: document.getElementById('tblLeaderboardBody'),
       btnBackFromLeaderboard: document.getElementById('btnBackFromLeaderboard'),
 
-      // Analytics Screen
       analyticsContent: document.getElementById('analyticsContent'),
       btnBackFromAnalytics: document.getElementById('btnBackFromAnalytics'),
 
-      // Profile Modal
       btnCloseProfileModal: document.getElementById('btnCloseProfileModal'),
       iptUsername: document.getElementById('iptUsername'),
       selProfileProvince: document.getElementById('selProfileProvince'),
@@ -1214,7 +1200,6 @@ export function renderAppHtml() {
       btnSaveProfile: document.getElementById('btnSaveProfile')
     };
 
-    // Navigation Helper
     function showScreen(name) {
       DOM.viewHub.classList.add('hidden');
       DOM.viewRun.classList.add('hidden');
@@ -1229,7 +1214,6 @@ export function renderAppHtml() {
       else if (name === 'analytics') DOM.viewAnalytics.classList.remove('hidden');
     }
 
-    // Update Profile HUD
     function updateProfileHud() {
       DOM.navUserName.textContent = STATE.user.username;
       DOM.navUserElo.textContent = STATE.user.elo + ' ELO';
@@ -1271,7 +1255,6 @@ export function renderAppHtml() {
         customProblemsQueue: customProblems ? [...customProblems] : null
       };
 
-      // Reset DOM displays
       DOM.hudTimer.textContent = '00:00.000';
       DOM.hudOpm.textContent = '0.0';
       DOM.hudStreak.textContent = '0';
@@ -1292,7 +1275,6 @@ export function renderAppHtml() {
       showScreen('run');
       nextProblem();
 
-      // Launch 144Hz RAF loop
       if (animFrameId) cancelAnimationFrame(animFrameId);
       animFrameId = requestAnimationFrame(runLoopTick);
     }
@@ -1304,7 +1286,6 @@ export function renderAppHtml() {
       const elapsed = performance.now() - run.startTime;
       run.durationMs = elapsed;
 
-      // Update Timer based on Mode
       if (run.modeCategory === 'blitz') {
         const remaining = Math.max(0, run.timeLimitMs - elapsed);
         DOM.hudTimer.textContent = formatMs(remaining);
@@ -1326,13 +1307,11 @@ export function renderAppHtml() {
         DOM.hudTimer.textContent = formatMs(elapsed);
       }
 
-      // Update OPM
       const minutes = elapsed / 60000;
       if (minutes > 0.01) {
         const liveOpm = (run.correctCount / minutes);
         DOM.hudOpm.textContent = liveOpm.toFixed(1);
 
-        // Update Ghost Bar comparison
         const currentExpectedCount = (40.0 / 60) * (elapsed / 1000);
         const diff = run.correctCount - currentExpectedCount;
         const fillPercent = Math.min(Math.max(50 + diff * 5, 5), 95);
@@ -1362,7 +1341,6 @@ export function renderAppHtml() {
       if (!STATE.activeRun) return;
       const run = STATE.activeRun;
 
-      // Check sprint condition
       if (run.targetQuestions && run.correctCount >= run.targetQuestions) {
         endRun();
         return;
@@ -1373,14 +1351,12 @@ export function renderAppHtml() {
       run.userTyped = '';
       run.lastProblemTime = performance.now();
 
-      // Zero-allocation DOM updates
       DOM.txtProblemExpression.textContent = problem.expression;
       DOM.txtUserInputEcho.textContent = '';
       DOM.lblProblemIndex.textContent = '#' + (run.totalAnswered + 1);
       DOM.lblOpCategory.textContent = problem.category;
     }
 
-    // Input Evaluator (Zen & Keypad)
     function handleInputDigit(digit) {
       if (!STATE.activeRun) return;
       const run = STATE.activeRun;
@@ -1405,11 +1381,9 @@ export function renderAppHtml() {
         return;
       }
 
-      // Append digit
       run.userTyped += digit;
       DOM.txtUserInputEcho.textContent = run.userTyped;
 
-      // Auto-submit in Zen Mode when length matches expected answer length!
       if (STATE.settings.zenMode && !STATE.settings.enterMode) {
         if (run.userTyped.length >= run.currentProblem.expectedLen) {
           evaluateCurrentInput();
@@ -1428,7 +1402,6 @@ export function renderAppHtml() {
       const isCorrect = (typedNum === problem.answer);
       run.totalAnswered++;
 
-      // Record telemetry
       run.telemetry.push({
         problem: problem.expression,
         a: problem.a,
@@ -1445,19 +1418,16 @@ export function renderAppHtml() {
         run.currentStreak++;
         if (run.currentStreak > run.maxStreak) run.maxStreak = run.currentStreak;
 
-        // Visual flash (CSS animation, zero layout shift)
         DOM.problemContainer.classList.remove('animate-hit', 'animate-miss');
         void DOM.problemContainer.offsetWidth;
         DOM.problemContainer.classList.add('animate-hit');
 
         playMechanicalClick();
 
-        // Survival mode bonus
         if (run.modeCategory === 'survival') {
           run.survivalRemainingMs = Math.min(run.survivalRemainingMs + 1500, 10000);
         }
 
-        // Multiplier progression
         updateStreakDisplay(run.currentStreak);
         DOM.hudCounter.textContent = run.correctCount;
         nextProblem();
@@ -1474,12 +1444,10 @@ export function renderAppHtml() {
         updateStreakDisplay(0);
 
         if (run.modeCategory === 'survival') {
-          // One error terminates survival run immediately
           endRun();
           return;
         }
 
-        // Clear input for retry
         run.userTyped = '';
         DOM.txtUserInputEcho.textContent = '';
       }
@@ -1523,28 +1491,23 @@ export function renderAppHtml() {
       const opm = minutes > 0 ? parseFloat((run.correctCount / minutes).toFixed(1)) : 0;
       const accuracy = run.totalAnswered > 0 ? parseFloat(((run.correctCount / run.totalAnswered) * 100).toFixed(1)) : 0;
 
-      // Update PB if applicable
       if (run.modeCategory === 'blitz' && opm > (STATE.pb[run.mode] || 0)) {
         STATE.pb[run.mode] = opm;
         saveLocalState();
       }
 
-      // Populate Post-Run Summary
       DOM.sumOpm.textContent = opm.toFixed(1);
       DOM.sumAccuracy.textContent = accuracy + '%';
       DOM.sumDuration.textContent = (elapsedMs / 1000).toFixed(1) + 's';
       DOM.sumMaxStreak.textContent = run.maxStreak;
 
-      // Build Latency Histogram
       renderHistogram(run.telemetry);
 
-      // Build Bottlenecks Matrix
       const bottlenecks = analyzeBottlenecks(run.telemetry);
       renderBottlenecks(bottlenecks);
 
       showScreen('summary');
 
-      // Submit Run to Cloudflare Edge
       submitRunPayload({
         userId: STATE.user.id,
         username: STATE.user.username,
@@ -1651,7 +1614,6 @@ export function renderAppHtml() {
         DOM.boxBottlenecks.appendChild(card);
       });
 
-      // Stash for weakness practice
       STATE.customWeaknessProblems = bottlenecks;
     }
 
@@ -1659,7 +1621,6 @@ export function renderAppHtml() {
     // 6. CLOUDFLARE WORKERS API & OFFLINE QUEUE
     // ==========================================
     async function submitRunPayload(payload) {
-      // Optimistic local Elo update
       const oldElo = STATE.user.elo;
 
       if (!navigator.onLine) {
@@ -1690,7 +1651,6 @@ export function renderAppHtml() {
             }
           }
         } else {
-          // If edge rejected or error, store offline
           queueOfflineRun(payload);
         }
       } catch (err) {
@@ -1701,17 +1661,17 @@ export function renderAppHtml() {
 
     function queueOfflineRun(payload) {
       try {
-        const queue = JSON.parse(localStorage.getItem('zb_offline_queue') || '[]');
+        const queue = JSON.parse(localStorage.getItem('mathgame_offline_queue') || '[]');
         payload.id = 'run_' + Math.random().toString(36).substring(2, 12);
         queue.push(payload);
-        localStorage.setItem('zb_offline_queue', JSON.stringify(queue));
+        localStorage.setItem('mathgame_offline_queue', JSON.stringify(queue));
         updateSyncQueueStatus();
       } catch (e) {}
     }
 
     async function syncOfflineQueue() {
       try {
-        const queue = JSON.parse(localStorage.getItem('zb_offline_queue') || '[]');
+        const queue = JSON.parse(localStorage.getItem('mathgame_offline_queue') || '[]');
         if (queue.length === 0) return;
 
         const res = await fetch('/api/runs/sync', {
@@ -1721,7 +1681,7 @@ export function renderAppHtml() {
         });
 
         if (res.ok) {
-          localStorage.removeItem('zb_offline_queue');
+          localStorage.removeItem('mathgame_offline_queue');
           updateSyncQueueStatus();
         }
       } catch (e) {
@@ -1731,7 +1691,7 @@ export function renderAppHtml() {
 
     function updateSyncQueueStatus() {
       try {
-        const queue = JSON.parse(localStorage.getItem('zb_offline_queue') || '[]');
+        const queue = JSON.parse(localStorage.getItem('mathgame_offline_queue') || '[]');
         if (queue.length > 0) {
           DOM.badgeSyncQueue.classList.remove('hidden');
           DOM.badgeSyncQueue.classList.add('flex');
@@ -1838,7 +1798,7 @@ export function renderAppHtml() {
         </div>
 
         <div class="space-y-3 mt-6">
-          <h3 class="font-bold text-sm text-white">کندترین ترکیبات و نقاط ضعف پرتکرار شما:</h3>
+          <h3 class="font-bold text-sm text-white">کندترین ترکیبات و نقاط ضعف پرتکرار شما در mathgame:</h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
       \`;
 
@@ -1868,8 +1828,6 @@ export function renderAppHtml() {
     // ==========================================
     // 8. EVENT LISTENERS & PERSIAN NUMPAD MAPPING
     // ==========================================
-    
-    // Persian and Arabic Digits Normalization Map
     const DIGIT_NORMALIZER = {
       '۰': '0', '۱': '1', '۲': '2', '۳': '3', '۴': '4',
       '۵': '5', '۶': '6', '۷': '7', '۸': '8', '۹': '9',
@@ -1879,7 +1837,6 @@ export function renderAppHtml() {
     };
 
     window.addEventListener('keydown', (e) => {
-      // Abort with Escape
       if (e.key === 'Escape') {
         if (STATE.activeRun) {
           endRun();
@@ -1891,21 +1848,18 @@ export function renderAppHtml() {
 
       if (!STATE.activeRun) return;
 
-      // Enter key for manual submission
       if (e.key === 'Enter') {
         e.preventDefault();
         evaluateCurrentInput();
         return;
       }
 
-      // Backspace
       if (e.key === 'Backspace') {
         e.preventDefault();
         handleInputDigit('backspace');
         return;
       }
 
-      // Persian/Arabic or Standard Numpad/Digit Keys
       let char = e.key;
       if (DIGIT_NORMALIZER[char] !== undefined) {
         char = DIGIT_NORMALIZER[char];
@@ -1920,7 +1874,6 @@ export function renderAppHtml() {
       }
     });
 
-    // Touch Numpad buttons click
     document.querySelectorAll('.numpad-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const val = btn.getAttribute('data-val');
@@ -1928,7 +1881,6 @@ export function renderAppHtml() {
       });
     });
 
-    // Hub Mode selection
     DOM.modeCards.forEach(card => {
       card.addEventListener('click', () => {
         const mode = card.getAttribute('data-mode');
@@ -1993,7 +1945,6 @@ export function renderAppHtml() {
         STATE.config.subOption = 'survival';
       }
 
-      // Hook sub-btn clicks
       DOM.boxModeOptions.querySelectorAll('.sub-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           DOM.boxModeOptions.querySelectorAll('.sub-btn').forEach(b => {
@@ -2005,7 +1956,6 @@ export function renderAppHtml() {
       });
     }
 
-    // Checkboxes configuration
     DOM.chkOpAdd.addEventListener('change', (e) => STATE.config.operators.add = e.target.checked);
     DOM.chkOpSub.addEventListener('change', (e) => STATE.config.operators.sub = e.target.checked);
     DOM.chkOpMul.addEventListener('change', (e) => STATE.config.operators.mul = e.target.checked);
@@ -2013,7 +1963,6 @@ export function renderAppHtml() {
     DOM.chkOpMod.addEventListener('change', (e) => STATE.config.operators.mod = e.target.checked);
     DOM.chkOpPow.addEventListener('change', (e) => STATE.config.operators.pow = e.target.checked);
 
-    // Ergonomic toggles
     DOM.toggleZenMode.addEventListener('change', (e) => {
       STATE.settings.zenMode = e.target.checked;
       saveLocalState();
@@ -2023,14 +1972,12 @@ export function renderAppHtml() {
       saveLocalState();
     });
 
-    // Audio toggle
     DOM.btnAudioToggle.addEventListener('click', () => {
       STATE.settings.audio = !STATE.settings.audio;
       DOM.iconAudio.textContent = STATE.settings.audio ? '🔊' : '🔇';
       saveLocalState();
     });
 
-    // Lang toggle
     DOM.btnLangToggle.addEventListener('click', () => {
       const isFa = document.documentElement.lang === 'fa';
       if (isFa) {
@@ -2046,7 +1993,6 @@ export function renderAppHtml() {
       }
     });
 
-    // Profile modal
     DOM.btnOpenProfile.addEventListener('click', () => {
       updateProfileHud();
       DOM.modalProfile.classList.remove('hidden');
@@ -2061,7 +2007,6 @@ export function renderAppHtml() {
         saveLocalState();
         updateProfileHud();
 
-        // Sync with backend
         try {
           await fetch('/api/user/profile', {
             method: 'POST',
@@ -2074,7 +2019,6 @@ export function renderAppHtml() {
       }
     });
 
-    // Start Buttons
     DOM.btnQuickStart.addEventListener('click', () => startRun());
     DOM.btnPlayAgain.addEventListener('click', () => startRun());
     DOM.btnReturnHub.addEventListener('click', () => showScreen('hub'));
@@ -2084,7 +2028,6 @@ export function renderAppHtml() {
       showScreen('hub');
     });
 
-    // Weakness Practice Buttons
     DOM.btnTrainWeaknessNow.addEventListener('click', () => {
       if (STATE.customWeaknessProblems && STATE.customWeaknessProblems.length > 0) {
         startRun(STATE.customWeaknessProblems);
@@ -2100,7 +2043,6 @@ export function renderAppHtml() {
       }
     });
 
-    // Navigation Buttons
     DOM.btnNavHome.addEventListener('click', () => showScreen('hub'));
     DOM.btnNavLeaderboard.addEventListener('click', () => {
       showScreen('leaderboard');
@@ -2117,7 +2059,6 @@ export function renderAppHtml() {
     });
     DOM.btnBackFromAnalytics.addEventListener('click', () => showScreen('hub'));
 
-    // Online/Offline detection & edge health
     window.addEventListener('online', () => {
       DOM.txtEdgeStatus.textContent = 'لبه کلودفلر (Online)';
       DOM.badgeNetwork.className = 'flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs text-emerald-400 font-mono';
@@ -2128,7 +2069,6 @@ export function renderAppHtml() {
       DOM.badgeNetwork.className = 'flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs text-amber-400 font-mono';
     });
 
-    // Check Cloudflare Edge PoP
     async function checkEdgeHealth() {
       try {
         const res = await fetch('/api/health');
@@ -2141,14 +2081,12 @@ export function renderAppHtml() {
       } catch (e) {}
     }
 
-    // Initialization
     loadLocalState();
     updateProfileHud();
     selectMode('blitz');
     updateSyncQueueStatus();
     checkEdgeHealth();
 
-    // Auto-sync if online
     if (navigator.onLine) {
       syncOfflineQueue();
     }
